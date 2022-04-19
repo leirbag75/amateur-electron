@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
+    "make": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
   },
