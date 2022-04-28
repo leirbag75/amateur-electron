@@ -52,6 +52,17 @@ describe('ImageViewer', () => {
         });
       });
 
+      it('should call like on backend if liking is enabled', () => {
+        backend.like = sinon.fake();
+        let relLike = 'https://api.com/images/1/likes';
+        act(() => {
+          ref.current.enableLiking(relLike);
+        });
+        ref.current.like();
+        assert.ok(backend.like.calledOnce);
+        assert.ok(backend.like.calledWith(relLike, ref.current));
+      });
+
     });
 
   });
