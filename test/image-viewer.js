@@ -43,6 +43,17 @@ describe('ImageViewer', () => {
       assert.ok(backend.loadImage.calledWith(url, ref.current));
     });
 
+    describe('liking behavior', () => {
+
+      it('should throw an error if liking is not enabled', () => {
+        assert.ok(ref.current.like); // Should be defined
+        assert.throws(() => {
+          ref.current.like();
+        });
+      });
+
+    });
+
   });
 
 });

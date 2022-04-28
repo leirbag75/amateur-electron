@@ -6,6 +6,10 @@ export default class ImageViewer extends React.Component {
     this.props.backend.loadImage(this.props.url, this);
   }
 
+  like = () => {
+    throw new Error('Liking not enabled');
+  }
+
   render() {
   }
 
