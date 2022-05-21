@@ -24,6 +24,9 @@ export default class ImageViewer extends React.Component {
   }
 
   render() {
+    return (
+      <button className={`like-button ${this.state.relLike? 'active': ''}`} />
+    );
   }
 
 }

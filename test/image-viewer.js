@@ -45,6 +45,8 @@ describe('ImageViewer', () => {
 
     describe('liking behavior', () => {
 
+      let relLike = 'https://api.com/images/1/likes';
+
       it('should throw an error if liking is not enabled', () => {
         assert.ok(ref.current.like); // Should be defined
         assert.throws(() => {
@@ -54,7 +56,6 @@ describe('ImageViewer', () => {
 
       it('should call like on backend if liking is enabled', () => {
         backend.like = sinon.fake();
-        let relLike = 'https://api.com/images/1/likes';
         act(() => {
           ref.current.enableLiking(relLike);
         });
@@ -62,6 +63,19 @@ describe('ImageViewer', () => {
         assert.ok(backend.like.calledOnce);
         assert.ok(backend.like.calledWith(relLike, ref.current));
       });
+
+      it(
+        'should render the like button differently if liking is enabled or not',
+        () => {
+          let likeButton = document.querySelector('.like-button:not(.active)');
+          assert.ok(likeButton);
+          act(() => {
+            ref.current.enableLiking(relLike);
+          });
+          likeButton = document.querySelector('.like-button.active');
+          assert.ok(likeButton);
+        }
+      );
 
     });
 
