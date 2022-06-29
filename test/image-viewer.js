@@ -79,6 +79,42 @@ describe('ImageViewer', () => {
 
     });
 
+    describe('unliking behavior', () => {
+
+      let relUnlike = 'https://api.com/images/1/likes';
+
+      it('should throw an error if unliking is not enabled', () => {
+        assert.ok(ref.current.unlike); // Should be defined
+        assert.throws(() => {
+          ref.current.unlike();
+        });
+      });
+
+      it('should call unlike on backend if unliking is enabled', () => {
+        backend.unlike = sinon.fake();
+        act(() => {
+          ref.current.enableUnliking(relUnlike);
+        });
+        ref.current.unlike();
+        assert.ok(backend.unlike.calledOnce);
+        assert.ok(backend.unlike.calledWith(relUnlike, ref.current));
+      });
+
+      it(
+        'should render the unlike button differently if it is enabled or not',
+        () => {
+          let unlikeButton = document.querySelector('.unlike-button:not(.active)');
+          assert.ok(unlikeButton);
+          act(() => {
+            ref.current.enableUnliking(relUnlike);
+          });
+          unlikeButton = document.querySelector('.unlike-button.active');
+          assert.ok(unlikeButton);
+        }
+      );
+
+    });
+
   });
 
 });
