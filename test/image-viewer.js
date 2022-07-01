@@ -143,6 +143,20 @@ describe('ImageViewer', () => {
 
     });
 
+    it('should render the image', () => {
+      let image = document.querySelector('img.image-viewed');
+      assert.ok(image, 'Image not rendered');
+    });
+
+    it('should let the src of the image be changed', () => {
+      let image = document.querySelector('img.image-viewed')
+      let src = 'www.image.com/image.jpeg'
+      act(() => {
+        ref.current.setSrc(src);
+      });
+      assert.equal(image.src, src, "Image's src not changed");
+    });
+
   });
 
 });

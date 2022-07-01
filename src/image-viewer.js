@@ -6,7 +6,8 @@ export default class ImageViewer extends React.Component {
     super(props);
     this.state = {
       relLike: null,
-      relUnlike: null
+      relUnlike: null,
+      src: ''
     };
   }
 
@@ -34,9 +35,14 @@ export default class ImageViewer extends React.Component {
     this.setState({relUnlike: url});
   }
 
+  setSrc(src) {
+    this.setState({src: src})
+  }
+
   render() {
     return (
       <div>
+        <img className="image-viewed" src={this.state.src} />
         <button className={`like-button ${this.state.relLike? 'active': ''}`} />
         <button className={`unlike-button ${this.state.relUnlike? 'active': ''}`} />
       </div>
