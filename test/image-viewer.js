@@ -39,8 +39,14 @@ describe('ImageViewer', () => {
     });
 
     it('should call loadImage on backend after mounting', () => {
-      assert.ok(backend.loadImage.calledOnce);
-      assert.ok(backend.loadImage.calledWith(url, ref.current));
+      assert.ok(
+        backend.loadImage.calledOnce,
+        '"loadImage" not called on backend'
+      );
+      assert.ok(
+        backend.loadImage.calledWith(url, ref.current),
+        '"loadImage" called on backend with wrong arguments'
+      );
     });
 
     describe('liking behavior', () => {
@@ -48,32 +54,45 @@ describe('ImageViewer', () => {
       let relLike = 'https://api.com/images/1/likes';
 
       it('should throw an error if liking is not enabled', () => {
-        assert.ok(ref.current.like); // Should be defined
-        assert.throws(() => {
-          ref.current.like();
-        });
+        assert.ok(ref.current.like, 'Function "like" not defined');
+        assert.throws(
+          () => {
+            ref.current.like();
+          },
+          Error,
+          '"like" called with liking disabled, but no error thrown'
+        );
       });
 
-      it('should call like on backend if liking is enabled', () => {
+      it('should call "like" on backend if liking is enabled', () => {
         backend.like = sinon.fake();
         act(() => {
           ref.current.enableLiking(relLike);
         });
         ref.current.like();
-        assert.ok(backend.like.calledOnce);
-        assert.ok(backend.like.calledWith(relLike, ref.current));
+        assert.ok(backend.like.calledOnce, '"like" not called on backend');
+        assert.ok(
+          backend.like.calledWith(relLike, ref.current),
+          '"like" called on backend with wrong arguments'
+        );
       });
 
       it(
         'should render the like button differently if liking is enabled or not',
         () => {
           let likeButton = document.querySelector('.like-button:not(.active)');
-          assert.ok(likeButton);
+          assert.ok(
+            likeButton,
+            'Like button not rendered, or rendered as active'
+          );
           act(() => {
             ref.current.enableLiking(relLike);
           });
           likeButton = document.querySelector('.like-button.active');
-          assert.ok(likeButton);
+          assert.ok(
+            likeButton,
+            'Like button not rendered, or rendered as inactive'
+          );
         }
       );
 
@@ -84,32 +103,41 @@ describe('ImageViewer', () => {
       let relUnlike = 'https://api.com/images/1/likes';
 
       it('should throw an error if unliking is not enabled', () => {
-        assert.ok(ref.current.unlike); // Should be defined
+        assert.ok(ref.current.unlike, 'Function "unlike" not defined"');
         assert.throws(() => {
           ref.current.unlike();
         });
       });
 
-      it('should call unlike on backend if unliking is enabled', () => {
+      it('should call "unlike" on backend if unliking is enabled', () => {
         backend.unlike = sinon.fake();
         act(() => {
           ref.current.enableUnliking(relUnlike);
         });
         ref.current.unlike();
-        assert.ok(backend.unlike.calledOnce);
-        assert.ok(backend.unlike.calledWith(relUnlike, ref.current));
+        assert.ok(backend.unlike.calledOnce, '"unlike" not called on backend');
+        assert.ok(
+          backend.unlike.calledWith(relUnlike, ref.current),
+          '"unlike" called on backend with wrong arguments'
+        );
       });
 
       it(
         'should render the unlike button differently if it is enabled or not',
         () => {
           let unlikeButton = document.querySelector('.unlike-button:not(.active)');
-          assert.ok(unlikeButton);
+          assert.ok(
+            unlikeButton,
+            'Unlike button not rendered, or rendered as active'
+          );
           act(() => {
             ref.current.enableUnliking(relUnlike);
           });
           unlikeButton = document.querySelector('.unlike-button.active');
-          assert.ok(unlikeButton);
+          assert.ok(
+            unlikeButton,
+            'Unlike button not rendered, or rendered as inactive'
+          );
         }
       );
 
