@@ -157,6 +157,19 @@ describe('ImageViewer', () => {
       assert.equal(image.src, src, "Image's src not changed");
     });
 
+    it('should render tags', () => {
+      let tagList = document.querySelector('.tag-list');
+      assert.ok(tagList, 'Tag list not rendered');
+      let tags = ['drawing', 'female', 'outdoors'];
+      assert.ok(tagList.children.length == 0, 'Tag list does not start empty');
+      act(() => {ref.current.setTags(tags);});
+      let renderedTags = [...tagList.children];
+      assert.ok(
+        renderedTags.length == tags.length && renderedTags.every((child, i) => child.innerHTML === tags[i]),
+        'Rendered tags do not match test tags'
+      );
+    });
+
   });
 
 });

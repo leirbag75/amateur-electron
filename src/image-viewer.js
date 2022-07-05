@@ -7,7 +7,8 @@ export default class ImageViewer extends React.Component {
     this.state = {
       relLike: null,
       relUnlike: null,
-      src: ''
+      src: '',
+      tags: []
     };
   }
 
@@ -39,12 +40,19 @@ export default class ImageViewer extends React.Component {
     this.setState({src: src})
   }
 
+  setTags(tags) {
+    this.setState({tags: [...tags]});
+  }
+
   render() {
     return (
       <div>
         <img className="image-viewed" src={this.state.src} />
         <button className={`like-button ${this.state.relLike? 'active': ''}`} />
         <button className={`unlike-button ${this.state.relUnlike? 'active': ''}`} />
+        <div className="tag-list">
+          {this.state.tags.map(tag => <span key={tag}>{tag}</span>)}
+        </div>
       </div>
     );
   }
