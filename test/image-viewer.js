@@ -104,9 +104,13 @@ describe('ImageViewer', () => {
 
       it('should throw an error if unliking is not enabled', () => {
         assert.ok(ref.current.unlike, 'Function "unlike" not defined"');
-        assert.throws(() => {
-          ref.current.unlike();
-        });
+        assert.throws(
+          () => {
+            ref.current.unlike();
+          },
+          Error,
+          '"unlike" called with unliking disabled, but no error thrown'
+        );
       });
 
       it('should call "unlike" on backend if unliking is enabled', () => {
