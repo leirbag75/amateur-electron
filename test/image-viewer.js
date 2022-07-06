@@ -9,21 +9,49 @@ import { strict as assert } from 'assert';
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-describe('ImageViewer', () => {
+class ReactTest {
 
-  let backend, ref, document, originalWindow;
-
-  beforeEach(() => {
-    backend = {};
-    ref = React.createRef();
+  start() {
+    this.backend = {};
+    this.ref = React.createRef();
     let dom = new JSDOM('<!DOCTYPE html><body><div id="root"></div></body>');
-    originalWindow = global.window;
+    this.originalWindow = global.window;
     global.window = dom.window;
-    document = dom.window.document;
+    this.document = dom.window.document;
+  }
+
+  finish() {
+    global.window = this.originalWindow;
+  }
+
+}
+
+function describeComponent(descriptionString, testFunction) {
+
+  let reactTest = new ReactTest();
+
+  describe(descriptionString, () => {
+
+    beforeEach(() => {
+      reactTest.start();
+    });
+
+    afterEach(() => {
+      reactTest.finish();
+    });
+
+    testFunction(reactTest);
+
   });
 
-  afterEach(() => {
-    global.window = originalWindow;
+}
+
+describeComponent('ImageViewer', reactTest => {
+
+  let backend, ref, document;
+
+  beforeEach(() => {
+    ({backend, ref, document} = reactTest);
   });
 
   describe('interactions with backend', () => {
