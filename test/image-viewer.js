@@ -24,6 +24,17 @@ class ReactTest {
     global.window = this.originalWindow;
   }
 
+  render(componentClass, props) {
+    let component = React.createElement(
+      componentClass,
+      {...props, ref: this.ref}
+    );
+    act(() => {
+      let root = createRoot(this.document.getElementById('root'));
+      root.render(component);
+    });
+  }
+
 }
 
 function describeComponent(descriptionString, testFunction) {
@@ -48,23 +59,15 @@ function describeComponent(descriptionString, testFunction) {
 
 describeComponent('ImageViewer', reactTest => {
 
-  let backend, ref, document;
+  let backend, ref, document, url = 'https://api.com/images/1';
 
   beforeEach(() => {
     ({backend, ref, document} = reactTest);
+    backend.loadImage = sinon.fake();
+    reactTest.render(ImageViewer, {url, backend});
   });
 
   describe('interactions with backend', () => {
-
-    let url = 'https://api.com/images/1';
-
-    beforeEach(() => {
-      backend.loadImage = sinon.fake();
-      act(() => {
-        let root = createRoot(document.getElementById('root'));
-        root.render(<ImageViewer ref={ref} url={url} backend={backend} />);
-      });
-    });
 
     it('should call loadImage on backend after mounting', () => {
       assert.ok(
