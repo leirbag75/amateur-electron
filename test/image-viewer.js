@@ -1,61 +1,11 @@
 import { describe, it } from 'mocha';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
-import { JSDOM } from 'jsdom';
 import sinon from 'sinon';
 import ImageViewer from '../src/image-viewer';
 import { strict as assert } from 'assert';
+import { describeComponent  } from './react-test';
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
-
-class ReactTest {
-
-  start() {
-    this.backend = {};
-    this.ref = React.createRef();
-    let dom = new JSDOM('<!DOCTYPE html><body><div id="root"></div></body>');
-    this.originalWindow = global.window;
-    global.window = dom.window;
-    this.document = dom.window.document;
-  }
-
-  finish() {
-    global.window = this.originalWindow;
-  }
-
-  render(componentClass, props) {
-    let component = React.createElement(
-      componentClass,
-      {...props, ref: this.ref}
-    );
-    act(() => {
-      let root = createRoot(this.document.getElementById('root'));
-      root.render(component);
-    });
-  }
-
-}
-
-function describeComponent(descriptionString, testFunction) {
-
-  let reactTest = new ReactTest();
-
-  describe(descriptionString, () => {
-
-    beforeEach(() => {
-      reactTest.start();
-    });
-
-    afterEach(() => {
-      reactTest.finish();
-    });
-
-    testFunction(reactTest);
-
-  });
-
-}
 
 describeComponent('ImageViewer', reactTest => {
 
