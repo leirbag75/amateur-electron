@@ -19,8 +19,11 @@ describeComponent('App', reactTest => {
 
   describe('page switching behavior', () => {
 
+    let app;
+
     beforeEach(() => {
       reactTest.render(App, {});
+      app = reactTest.ref.current;
     });
 
     it('should start on home page', () => {
@@ -28,7 +31,6 @@ describeComponent('App', reactTest => {
     });
 
     it('should switch pages', () => {
-      let app = reactTest.ref.current
       act(() => {
         app.setPage(MockPage);
       });
@@ -36,7 +38,6 @@ describeComponent('App', reactTest => {
     });
 
     it('should render the selected page', () => {
-      let app = reactTest.ref.current;
       act(() => {
         app.setPage(MockPage);
       });
