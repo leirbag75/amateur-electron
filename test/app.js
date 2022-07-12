@@ -35,6 +35,15 @@ describeComponent('App', reactTest => {
       assert.equal(app.currentPage, MockPage);
     });
 
+    it('should render the selected page', () => {
+      let app = reactTest.ref.current;
+      act(() => {
+        app.setPage(MockPage);
+      });
+      let mockDiv = reactTest.document.getElementById('mock-div');
+      assert.ok(mockDiv, 'Selected page not rendered');
+    });
+
   });
 
 })
