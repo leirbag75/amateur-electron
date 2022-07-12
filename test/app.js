@@ -2,10 +2,18 @@ import { describe, it } from 'mocha';
 import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import App from '../src/app';
-import ImageViewer from '../src/image-viewer';
 import HomePage from '../src/home-page';
 import { strict as assert } from 'assert';
 import { describeComponent  } from './react-test';
+import React from 'react';
+
+class MockPage extends React.Component {
+
+  render() {
+    return <div id="mock-div" />;
+  }
+
+}
 
 describeComponent('App', reactTest => {
 
@@ -22,9 +30,9 @@ describeComponent('App', reactTest => {
     it('should switch pages', () => {
       let app = reactTest.ref.current
       act(() => {
-        app.setPage(ImageViewer);
+        app.setPage(MockPage);
       });
-      assert.equal(app.currentPage, ImageViewer);
+      assert.equal(app.currentPage, MockPage);
     });
 
   });
