@@ -19,10 +19,10 @@ export class ReactTest {
     global.window = this.originalWindow;
   }
 
-  render(componentClass, props) {
+  render(componentClass, props, ref = this.ref) {
     let component = React.createElement(
       componentClass,
-      {...props, ref: this.ref}
+      {...props, ref: ref}
     );
     act(() => {
       let root = createRoot(this.document.getElementById('root'));
