@@ -6,7 +6,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: HomePage
+      currentPage: <HomePage />
     };
   }
 
@@ -19,10 +19,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    return React.createElement(
-      this.state.currentPage,
-      null
-    );
+    return this.currentPage;
   }
 
 }

@@ -27,19 +27,21 @@ describeComponent('App', reactTest => {
     });
 
     it('should start on home page', () => {
-      assert.equal(reactTest.ref.current.currentPage, HomePage)
+      assert.equal(reactTest.ref.current.currentPage.type, HomePage)
     });
 
     it('should switch pages', () => {
+      let component = <MockPage />
       act(() => {
-        app.setPage(MockPage);
+        app.setPage(component);
       });
-      assert.equal(app.currentPage, MockPage);
+      assert.equal(app.currentPage, component);
     });
 
     it('should render the selected page', () => {
+      let component = <MockPage />
       act(() => {
-        app.setPage(MockPage);
+        app.setPage(component);
       });
       let mockDiv = reactTest.document.getElementById('mock-div');
       assert.ok(mockDiv, 'Selected page not rendered');
