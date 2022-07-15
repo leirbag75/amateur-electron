@@ -3,6 +3,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
+import { strict as assert } from 'assert';
 
 export class ReactTest {
 
@@ -52,3 +53,9 @@ export function describeComponent(descriptionString, testFunction) {
 
 }
 
+export function assertCalledOnceWith(object, field, ...args) {
+  assert.ok(object[field].calledOnce, `"${field}" not called once`);
+  assert.ok(
+    object[field].calledWith(...args), `"${field}" called with wrong arguments`
+  );
+}

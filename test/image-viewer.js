@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import ImageViewer from '../src/image-viewer';
 import { strict as assert } from 'assert';
-import { describeComponent  } from './react-test';
+import { describeComponent, assertCalledOnceWith  } from './react-test';
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -20,14 +20,7 @@ describeComponent('ImageViewer', reactTest => {
   describe('interactions with backend', () => {
 
     it('should call loadImage on backend after mounting', () => {
-      assert.ok(
-        backend.loadImage.calledOnce,
-        '"loadImage" not called on backend'
-      );
-      assert.ok(
-        backend.loadImage.calledWith(url, ref.current),
-        '"loadImage" called on backend with wrong arguments'
-      );
+      assertCalledOnceWith(backend, 'loadImage', url, ref.current);
     });
 
     describe('liking behavior', () => {
@@ -51,11 +44,7 @@ describeComponent('ImageViewer', reactTest => {
           ref.current.enableLiking(relLike);
         });
         ref.current.like();
-        assert.ok(backend.like.calledOnce, '"like" not called on backend');
-        assert.ok(
-          backend.like.calledWith(relLike, ref.current),
-          '"like" called on backend with wrong arguments'
-        );
+        assertCalledOnceWith(backend, 'like', relLike, ref.current);
       });
 
       it(
@@ -100,11 +89,7 @@ describeComponent('ImageViewer', reactTest => {
           ref.current.enableUnliking(relUnlike);
         });
         ref.current.unlike();
-        assert.ok(backend.unlike.calledOnce, '"unlike" not called on backend');
-        assert.ok(
-          backend.unlike.calledWith(relUnlike, ref.current),
-          '"unlike" called on backend with wrong arguments'
-        );
+        assertCalledOnceWith(backend, 'unlike', relUnlike, ref.current);
       });
 
       it(
