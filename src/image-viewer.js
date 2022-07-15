@@ -13,7 +13,9 @@ export default class ImageViewer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.backend.loadImage(this.props.url, this);
+    this.props.backend.loadResource(this.props.url, resource => {
+      // TODO
+    });
   }
 
   like = () => {

@@ -15,7 +15,7 @@ export default class Backend {
     this.app.setPage(<ImageViewer url={url} backend={this} />);
   }
 
-  loadImage() {
+  loadResource() {
   }
 
 }

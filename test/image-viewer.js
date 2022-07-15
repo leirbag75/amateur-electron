@@ -13,14 +13,24 @@ describeComponent('ImageViewer', reactTest => {
 
   beforeEach(() => {
     ({backend, ref, document} = reactTest);
-    backend.loadImage = sinon.fake();
+    backend.loadResource = sinon.fake();
     reactTest.render(ImageViewer, {url, backend});
   });
 
   describe('interactions with backend', () => {
 
-    it('should call loadImage on backend after mounting', () => {
-      assertCalledOnceWith(backend, 'loadImage', url, ref.current);
+    it('should call loadResource on backend after mounting', () => {
+      assert.ok(backend.loadResource.calledOnce, '"loadResource" not called');
+      assert.equal(
+        backend.loadResource.args[0][0],
+        url,
+        '"loadResource" not called with URL to image resource'
+      );
+      assert.equal(
+        typeof backend.loadResource.args[0][1],
+        'function',
+        '"loadResource" not called with callback'
+      );
     });
 
     describe('liking behavior', () => {
