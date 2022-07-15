@@ -26,6 +26,20 @@ describeComponent('Resource', reactTest => {
       );
     });
 
+    it('should call read on all readers', () => {
+      let viewer = ref.current;
+      assert.equal(typeof viewer.readers, 'function');
+      function fakeReader() {
+        return {read: sinon.fake()};
+      }
+      let readers = [fakeReader(), fakeReader(), fakeReader()];
+      let resource = {};
+      sinon.replace(viewer, 'readers', sinon.fake.returns(readers));
+      viewer.readResource(resource);
+      for(let reader of readers)
+        assertCalledOnceWith(reader, 'read', resource, viewer);
+    });
+
   });
 
 });
