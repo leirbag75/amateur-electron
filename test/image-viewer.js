@@ -19,20 +19,6 @@ describeComponent('ImageViewer', reactTest => {
 
   describe('interactions with backend', () => {
 
-    it('should call loadResource on backend after mounting', () => {
-      assert.ok(backend.loadResource.calledOnce, '"loadResource" not called');
-      assert.equal(
-        backend.loadResource.args[0][0],
-        url,
-        '"loadResource" not called with URL to image resource'
-      );
-      assert.equal(
-        typeof backend.loadResource.args[0][1],
-        'function',
-        '"loadResource" not called with callback'
-      );
-    });
-
     describe('liking behavior', () => {
 
       let relLike = 'https://api.com/images/1/likes';

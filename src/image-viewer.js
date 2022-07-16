@@ -1,6 +1,7 @@
 import React from 'react';
+import Resource from './resource';
 
-export default class ImageViewer extends React.Component {
+export default class ImageViewer extends Resource {
 
   constructor(props) {
     super(props);
@@ -10,12 +11,6 @@ export default class ImageViewer extends React.Component {
       src: '',
       tags: []
     };
-  }
-
-  componentDidMount() {
-    this.props.backend.loadResource(this.props.url, resource => {
-      // TODO
-    });
   }
 
   like = () => {
