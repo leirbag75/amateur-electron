@@ -4,8 +4,11 @@ import sinon from 'sinon';
 import ImageViewer from '../src/image-viewer';
 import { strict as assert } from 'assert';
 import { describeComponent, assertCalledOnceWith  } from './react-test';
+import addResourceTests from './resource-subclass';
 
 describeComponent('ImageViewer', reactTest => {
+
+  addResourceTests(ImageViewer);
 
   let backend, ref, document, url = 'https://api.com/images/1';
 
