@@ -5,8 +5,6 @@ import ImageViewer from '../src/image-viewer';
 import { strict as assert } from 'assert';
 import { describeComponent, assertCalledOnceWith  } from './react-test';
 
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
-
 describeComponent('ImageViewer', reactTest => {
 
   let backend, ref, document, url = 'https://api.com/images/1';
