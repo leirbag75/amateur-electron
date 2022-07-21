@@ -12,6 +12,8 @@ export default class Resource extends React.Component {
   }
 
   componentDidMount() {
+    if(this.props.embed)
+      this.readResource(this.props.embed);
     this.props.backend.loadResource(this.props.url, this.readResource);
   }
 
