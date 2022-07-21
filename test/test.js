@@ -6,3 +6,4 @@ require('./image-viewer.js');
 require('./app.js');
 require('./backend.js');
 require('./resource');
+require('./tag');
