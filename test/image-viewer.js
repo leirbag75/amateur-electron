@@ -61,6 +61,21 @@ describeComponent('ImageViewer', reactTest => {
       }
     );
 
+    it('should call "like" callback when like button is clicked', () => {
+      sinon.replace(ref.current, 'like', sinon.fake());
+      act(() => {
+        ref.current.enableLiking(relLike);
+      });
+      act(() => {
+        let button = document.querySelector('.like-button');
+        button.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
+      });
+      assert.ok(
+        ref.current.like.calledOnce,
+        'Like button clicked, but "like" callback not called'
+      );
+    });
+
   });
 
   describe('unliking behavior', () => {
@@ -105,6 +120,21 @@ describeComponent('ImageViewer', reactTest => {
         );
       }
     );
+
+    it('should call "unlike" callback when unlike button is clicked', () => {
+      sinon.replace(ref.current, 'unlike', sinon.fake());
+      act(() => {
+        ref.current.enableLiking(relUnlike);
+      });
+      act(() => {
+        let button = document.querySelector('.unlike-button');
+        button.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
+      });
+      assert.ok(
+        ref.current.unlike.calledOnce,
+        'Unlike button clicked, but "unlike" callback not called'
+      );
+    });
 
   });
 

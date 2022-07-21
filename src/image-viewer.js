@@ -45,8 +45,14 @@ export default class ImageViewer extends Resource {
     return (
       <div>
         <img className="image-viewed" src={this.state.src} />
-        <button className={`like-button ${this.state.relLike? 'active': ''}`} />
-        <button className={`unlike-button ${this.state.relUnlike? 'active': ''}`} />
+        <button
+          className={`like-button ${this.state.relLike? 'active': ''}`}
+          onClick={this.like}
+        />
+        <button
+          className={`unlike-button ${this.state.relUnlike? 'active': ''}`}
+          onClick={this.unlike}
+        />
         <div className="tag-list">
           {this.state.tags.map(tag => <span key={tag}>{tag}</span>)}
         </div>
