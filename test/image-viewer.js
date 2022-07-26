@@ -2,8 +2,8 @@ import { describe, it } from 'mocha';
 import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import ImageViewer from '../src/image-viewer';
-import { strict as assert } from 'assert';
-import { describeComponent, assertCalledOnceWith  } from './test-helpers';
+import assert from './assertions';
+import { describeComponent } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
 describeComponent('ImageViewer', reactTest => {
@@ -39,7 +39,7 @@ describeComponent('ImageViewer', reactTest => {
         ref.current.enableLiking(relLike);
       });
       ref.current.like();
-      assertCalledOnceWith(backend, 'like', relLike, ref.current);
+      assert.calledOnceWith(backend, 'like', relLike, ref.current);
     });
 
     it(
@@ -99,7 +99,7 @@ describeComponent('ImageViewer', reactTest => {
         ref.current.enableUnliking(relUnlike);
       });
       ref.current.unlike();
-      assertCalledOnceWith(backend, 'unlike', relUnlike, ref.current);
+      assert.calledOnceWith(backend, 'unlike', relUnlike, ref.current);
     });
 
     it(

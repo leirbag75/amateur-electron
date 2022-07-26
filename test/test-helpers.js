@@ -52,10 +52,3 @@ export function describeComponent(descriptionString, testFunction) {
   });
 
 }
-
-export function assertCalledOnceWith(object, field, ...args) {
-  assert.ok(object[field].calledOnce, `"${field}" not called once`);
-  assert.ok(
-    object[field].calledWith(...args), `"${field}" called with wrong arguments`
-  );
-}

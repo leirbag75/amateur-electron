@@ -2,8 +2,8 @@ import { describe, it } from 'mocha';
 import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Resource from '../src/resource';
-import { strict as assert } from 'assert';
-import { describeComponent, assertCalledOnceWith  } from './test-helpers';
+import assert from './assertions';
+import { describeComponent } from './test-helpers';
 
 export default function addResourceTests(
   resourceClass,
@@ -40,7 +40,7 @@ export default function addResourceTests(
         });
 
         it('should call readResource on "embed" prop', () => {
-          assertCalledOnceWith(
+          assert.calledOnceWith(
             ref.current,
             'readResource',
             embed
@@ -56,7 +56,7 @@ export default function addResourceTests(
         });
 
         it('should call loadResource on the backend', () => {
-          assertCalledOnceWith(
+          assert.calledOnceWith(
             backend,
             'loadResource',
             url,
@@ -75,7 +75,7 @@ export default function addResourceTests(
           sinon.replace(viewer, 'readers', sinon.fake.returns(readers));
           viewer.readResource(resource);
           for(let reader of readers)
-            assertCalledOnceWith(reader, 'read', resource, viewer);
+            assert.calledOnceWith(reader, 'read', resource, viewer);
         });
       })
     });
