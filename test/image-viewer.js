@@ -85,17 +85,17 @@ function addButtonTests(buttonName, reactTest) {
     it(
       `should render the ${testAttributes.name} button differently if ${testAttributes.gerundName} is enabled or not`,
       () => {
-        let button = document.querySelector(`${testAttributes.buttonClassName}:not(.active)`);
-        assert.ok(
-          button,
+        assert.rendered(
+          document,
+          testAttributes.buttonClassName + ':not(.active)',
           `${testAttributes.capitalizedName} button not rendered, or rendered as active`
         );
         act(() => {
           ref.current[testAttributes.enableFunctionName](rel);
         });
-        button = document.querySelector(`${testAttributes.buttonClassName}.active`);
-        assert.ok(
-          button,
+        assert.rendered(
+          document,
+          testAttributes.buttonClassName + '.active',
           `${testAttributes.capitalizedName} button not rendered, or rendered as inactive`
         );
       }
@@ -140,8 +140,7 @@ describeComponent('ImageViewer', reactTest => {
   addButtonTests('unlike', reactTest);
 
   it('should render the image', () => {
-    let image = document.querySelector('img.image-viewed');
-    assert.ok(image, 'Image not rendered');
+    assert.rendered(document, 'img.image-viewed');
   });
 
   it('should let the src of the image be changed', () => {
