@@ -7,4 +7,13 @@ function calledOnceWith(object, field, ...args) {
   );
 }
 
-export default { ...assert, calledOnceWith };
+function rendered(
+  document,
+  selector,
+  message =  `No element matching selector ${selector} rendered.`
+) {
+  let element = document.querySelector(selector);
+  assert.ok(element, message);
+}
+
+export default { ...assert, calledOnceWith, rendered };
