@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import App from '../src/app';
 import Tag from '../src/tag';
 import { strict as assert } from 'assert';
-import { describeComponent  } from './react-test';
+import { describeComponent  } from './test-helpers';
 import React from 'react';
 import addResourceTests from './resource-subclass.js';
 

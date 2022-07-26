@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Resource from '../src/resource';
 import { strict as assert } from 'assert';
-import { describeComponent, assertCalledOnceWith  } from './react-test';
+import { describeComponent, assertCalledOnceWith  } from './test-helpers';
 
 export default function addResourceTests(
   resourceClass,

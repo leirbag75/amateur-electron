@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import App from '../src/app';
 import HomePage from '../src/home-page';
 import { strict as assert } from 'assert';
-import { describeComponent  } from './react-test';
+import { describeComponent  } from './test-helpers';
 import React from 'react';
 
 class MockPage extends React.Component {

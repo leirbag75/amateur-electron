@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import ImageViewer from '../src/image-viewer';
 import { strict as assert } from 'assert';
-import { describeComponent, assertCalledOnceWith  } from './react-test';
+import { describeComponent, assertCalledOnceWith  } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
 describeComponent('ImageViewer', reactTest => {
