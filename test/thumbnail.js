@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Thumbnail from '../src/thumbnail';
 import { strict as assert } from 'assert';
-import { describeComponent, assertCalledOnceWith  } from './test-helpers';
+import { describeComponent } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
 describeComponent('Thumbnail', reactTest => {
