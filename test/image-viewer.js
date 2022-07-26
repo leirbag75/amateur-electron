@@ -6,6 +6,123 @@ import assert from './assertions';
 import { describeComponent } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// Helper object to compute the attributes that are different between tests of
+// the like button and the unlike button
+class ButtonTestAttributes {
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  get capitalizedName() {
+    return capitalize(this.name);
+  }
+
+  get enableFunctionName() {
+    return `enable${capitalize(this.gerundName)}`;
+  }
+
+  get gerundName() {
+    return this.name.slice(0, -1) + 'ing';
+  }
+
+  get pluralName() {
+    return this.name + 's';
+  }
+
+  get buttonClassName() {
+    return `.${this.name}-button`;
+  }
+
+}
+
+function addButtonTests(buttonName, reactTest) {
+
+  let testAttributes = new ButtonTestAttributes(buttonName);
+  let rel = 'https://some-url.com';
+
+  describe(`${testAttributes.gerundName} behavior`, () => {
+
+    let backend, ref, document;
+
+    beforeEach(() => {
+      ({ backend, ref, document } = reactTest);
+      backend[testAttributes.name] = sinon.fake();
+    });
+
+    it(
+      `should throw an error if ${testAttributes.gerundName} is not enabled`,
+      () => {
+        assert.ok(
+          ref.current[testAttributes.name],
+          `Function "${testAttributes.name}" not defined`
+        );
+        assert.throws(
+          () => {
+            ref.current[testAttributes.name]();
+          },
+          Error,
+          `"${testAttributes.name}" called with ${testAttributes.gerundName} disabled, but no error thrown`
+        );
+      }
+    );
+
+    it(
+      `should call "${testAttributes.name}" on the backend if ${testAttributes.gerundName} is enabled`,
+      () => {
+        act(() => {
+          ref.current[testAttributes.enableFunctionName](rel);
+        });
+        ref.current[testAttributes.name]();
+        assert.calledOnceWith(backend, testAttributes.name, rel, ref.current);
+      }
+    );
+
+    it(
+      `should render the ${testAttributes.name} button differently if ${testAttributes.gerundName} is enabled or not`,
+      () => {
+        let button = document.querySelector(`${testAttributes.buttonClassName}:not(.active)`);
+        assert.ok(
+          button,
+          `${testAttributes.capitalizedName} button not rendered, or rendered as active`
+        );
+        act(() => {
+          ref.current[testAttributes.enableFunctionName](rel);
+        });
+        button = document.querySelector(`${testAttributes.buttonClassName}.active`);
+        assert.ok(
+          button,
+          `${testAttributes.capitalizedName} button not rendered, or rendered as inactive`
+        );
+      }
+    );
+
+    it(
+      `should call "${testAttributes.name}" callback when ${testAttributes.name} button is clicked`,
+      () => {
+        sinon.replace(ref.current, testAttributes.name, sinon.fake());
+        act(() => {
+          ref.current[testAttributes.enableFunctionName](rel);
+        });
+        act(() => {
+          let button = document.querySelector(testAttributes.buttonClassName);
+          button.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
+        });
+        assert.ok(
+          ref.current[testAttributes.name].calledOnce,
+          `${testAttributes.capitalizedName} button clicked, but "${testAttributes.name}" callback not called`
+        );
+      }
+    );
+
+  });
+
+}
+
 describeComponent('ImageViewer', reactTest => {
 
   addResourceTests(ImageViewer);
@@ -18,125 +135,9 @@ describeComponent('ImageViewer', reactTest => {
     reactTest.render(ImageViewer, {url, backend});
   });
 
-  describe('liking behavior', () => {
+  addButtonTests('like', reactTest);
 
-    let relLike = 'https://api.com/images/1/likes';
-
-    it('should throw an error if liking is not enabled', () => {
-      assert.ok(ref.current.like, 'Function "like" not defined');
-      assert.throws(
-        () => {
-          ref.current.like();
-        },
-        Error,
-        '"like" called with liking disabled, but no error thrown'
-      );
-    });
-
-    it('should call "like" on backend if liking is enabled', () => {
-      backend.like = sinon.fake();
-      act(() => {
-        ref.current.enableLiking(relLike);
-      });
-      ref.current.like();
-      assert.calledOnceWith(backend, 'like', relLike, ref.current);
-    });
-
-    it(
-      'should render the like button differently if liking is enabled or not',
-      () => {
-        let likeButton = document.querySelector('.like-button:not(.active)');
-        assert.ok(
-          likeButton,
-          'Like button not rendered, or rendered as active'
-        );
-        act(() => {
-          ref.current.enableLiking(relLike);
-        });
-        likeButton = document.querySelector('.like-button.active');
-        assert.ok(
-          likeButton,
-          'Like button not rendered, or rendered as inactive'
-        );
-      }
-    );
-
-    it('should call "like" callback when like button is clicked', () => {
-      sinon.replace(ref.current, 'like', sinon.fake());
-      act(() => {
-        ref.current.enableLiking(relLike);
-      });
-      act(() => {
-        let button = document.querySelector('.like-button');
-        button.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
-      });
-      assert.ok(
-        ref.current.like.calledOnce,
-        'Like button clicked, but "like" callback not called'
-      );
-    });
-
-  });
-
-  describe('unliking behavior', () => {
-
-    let relUnlike = 'https://api.com/images/1/likes';
-
-    it('should throw an error if unliking is not enabled', () => {
-      assert.ok(ref.current.unlike, 'Function "unlike" not defined"');
-      assert.throws(
-        () => {
-          ref.current.unlike();
-        },
-        Error,
-        '"unlike" called with unliking disabled, but no error thrown'
-      );
-    });
-
-    it('should call "unlike" on backend if unliking is enabled', () => {
-      backend.unlike = sinon.fake();
-      act(() => {
-        ref.current.enableUnliking(relUnlike);
-      });
-      ref.current.unlike();
-      assert.calledOnceWith(backend, 'unlike', relUnlike, ref.current);
-    });
-
-    it(
-      'should render the unlike button differently if it is enabled or not',
-      () => {
-        let unlikeButton = document.querySelector('.unlike-button:not(.active)');
-        assert.ok(
-          unlikeButton,
-          'Unlike button not rendered, or rendered as active'
-        );
-        act(() => {
-          ref.current.enableUnliking(relUnlike);
-        });
-        unlikeButton = document.querySelector('.unlike-button.active');
-        assert.ok(
-          unlikeButton,
-          'Unlike button not rendered, or rendered as inactive'
-        );
-      }
-    );
-
-    it('should call "unlike" callback when unlike button is clicked', () => {
-      sinon.replace(ref.current, 'unlike', sinon.fake());
-      act(() => {
-        ref.current.enableLiking(relUnlike);
-      });
-      act(() => {
-        let button = document.querySelector('.unlike-button');
-        button.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
-      });
-      assert.ok(
-        ref.current.unlike.calledOnce,
-        'Unlike button clicked, but "unlike" callback not called'
-      );
-    });
-
-  });
+  addButtonTests('unlike', reactTest);
 
   it('should render the image', () => {
     let image = document.querySelector('img.image-viewed');
