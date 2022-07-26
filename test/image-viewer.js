@@ -156,7 +156,7 @@ describeComponent('ImageViewer', reactTest => {
     let tagList = document.querySelector('.tag-list');
     assert.ok(tagList, 'Tag list not rendered');
     let tags = ['drawing', 'female', 'outdoors'];
-    assert.ok(tagList.children.length == 0, 'Tag list does not start empty');
+    assert.equal(tagList.children.length, 0, 'Tag list does not start empty');
     act(() => {ref.current.setTags(tags);});
     let renderedTags = [...tagList.children];
     assert.ok(
