@@ -10,13 +10,13 @@ describeComponent('Thumbnail', reactTest => {
 
   addResourceTests(Thumbnail);
 
-  let document;
+  let document, url = 'https://api.com/resource';
 
   beforeEach(() => {
     ({ document } = reactTest);
     let { backend } = reactTest;
     backend.loadResource = sinon.fake();
-    reactTest.render(Thumbnail, {backend});
+    reactTest.render(Thumbnail, {backend, url});
   });
 
   describe('image rendering', () => {
@@ -39,6 +39,13 @@ describeComponent('Thumbnail', reactTest => {
       assert.equal(image.src, url, 'Thumbnail image src not set');
     });
 
+  });
+
+  it('should call viewImage on the backend', () => {
+    let { backend, ref } = reactTest;
+    backend.viewImage = sinon.fake();
+    ref.current.view();
+    assert.calledOnceWith(backend, 'viewImage', url);
   });
 
 });

@@ -14,6 +14,10 @@ export default class Thumbnail extends Resource {
     this.setState({src});
   }
 
+  view() {
+    this.props.backend.viewImage(this.props.url);
+  }
+
   render() {
     return <img className="thumbnail" src={this.state.src} />
   }
