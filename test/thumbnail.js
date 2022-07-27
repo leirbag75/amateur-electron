@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Thumbnail from '../src/thumbnail';
-import { strict as assert } from 'assert';
+import assert from './assertions';
 import { describeComponent } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
