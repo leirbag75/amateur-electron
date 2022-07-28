@@ -17,7 +17,7 @@ describeComponent('backend', reactTest => {
     reactTest.render(App, {}, backend.ref);
   });
 
-  describe('selectImage', () => {
+  describe('viewImage', () => {
     it('should switch to the image viewer', () => {
       let url = 'https://site.com/image.jpeg';
       act(() => {
