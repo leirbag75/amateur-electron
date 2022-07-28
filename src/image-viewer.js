@@ -1,5 +1,6 @@
 import React from 'react';
 import Resource from './resource';
+import Tag from './tag';
 
 export default class ImageViewer extends Resource {
 
@@ -54,7 +55,9 @@ export default class ImageViewer extends Resource {
           onClick={this.unlike}
         />
         <div className="tag-list">
-          {this.state.tags.map(tag => <span key={tag}>{tag}</span>)}
+          {this.state.tags.map(tag => <Tag
+             key={tag.href} backend={this.props.backend} embed={tag.embed}
+          />)}
         </div>
       </div>
     );

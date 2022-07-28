@@ -1,6 +1,14 @@
 import React from 'react';
 import Resource from './resource';
 
+let readers = [
+  {
+    read(resource, viewer) {
+      viewer.setName(resource.name);
+    }
+  }
+]
+
 export default class Tag extends Resource {
 
   constructor(props) {
@@ -8,6 +16,10 @@ export default class Tag extends Resource {
     this.state = {
       tagName: ''
     };
+  }
+
+  readers() {
+    return readers;
   }
 
   setName(name) {
