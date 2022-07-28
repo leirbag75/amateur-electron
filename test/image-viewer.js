@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import ImageViewer from '../src/image-viewer';
 import assert from './assertions';
-import { describeComponent } from './test-helpers';
+import { describeComponent, simulateClick } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
 function capitalize(string) {
@@ -108,10 +108,7 @@ function addButtonTests(buttonName, reactTest) {
         act(() => {
           ref.current[testAttributes.enableFunctionName](rel);
         });
-        act(() => {
-          let button = document.querySelector(testAttributes.buttonClassName);
-          button.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
-        });
+        simulateClick(document, testAttributes.buttonClassName);
         assert.ok(
           ref.current[testAttributes.name].calledOnce,
           `${testAttributes.capitalizedName} button clicked, but "${testAttributes.name}" callback not called`

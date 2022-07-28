@@ -52,3 +52,10 @@ export function describeComponent(descriptionString, testFunction) {
   });
 
 }
+
+export function simulateClick(document, selector) {
+  let element = document.querySelector(selector);
+  act(() => {
+    element.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
+  });
+}
