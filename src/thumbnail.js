@@ -19,7 +19,7 @@ export default class Thumbnail extends Resource {
   }
 
   render() {
-    return <img className="thumbnail" src={this.state.src} />
+    return <img className="thumbnail" src={this.state.src} onClick={this.view} />
   }
 
 }

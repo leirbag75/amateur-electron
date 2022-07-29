@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Thumbnail from '../src/thumbnail';
 import assert from './assertions';
-import { describeComponent } from './test-helpers';
+import { describeComponent, simulateClick } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
 describeComponent('Thumbnail', reactTest => {
@@ -46,6 +46,17 @@ describeComponent('Thumbnail', reactTest => {
     backend.viewImage = sinon.fake();
     ref.current.view();
     assert.calledOnceWith(backend, 'viewImage', url);
+  });
+
+  it('should call "view" callback when image is clicked', () => {
+    let { ref, document } = reactTest;
+    sinon.replace(ref.current, 'view', sinon.fake());
+    act(() => {ref.current.setSrc('');}); // Trigger re-render
+    simulateClick(document, 'img.thumbnail');
+    assert.ok(
+      ref.current.view.calledOnce,
+      'Thumbnail clicked, but "view" callback not called'
+    );
   });
 
 });
