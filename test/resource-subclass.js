@@ -59,8 +59,7 @@ export default function addResourceTests(
           assert.calledOnceWith(
             backend,
             'loadResource',
-            url,
-            ref.current.readResource
+            url
           );
         });
 
