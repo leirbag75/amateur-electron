@@ -14,8 +14,7 @@ describeComponent('Thumbnail', reactTest => {
 
   beforeEach(() => {
     ({ document } = reactTest);
-    let { backend } = reactTest;
-    reactTest.render(Thumbnail, {backend, url});
+    reactTest.render(Thumbnail, {url});
   });
 
   describe('image rendering', () => {

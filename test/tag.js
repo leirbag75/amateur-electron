@@ -12,11 +12,11 @@ describeComponent('Tag', reactTest => {
 
   addResourceTests(Tag);
 
-  let backend, ref, document;
+  let ref, document, url = 'https://api.com/tags/1';
 
   beforeEach(() => {
-    ({ backend, ref, document } = reactTest);
-    reactTest.render(Tag, {backend});
+    ({ ref, document } = reactTest);
+    reactTest.render(Tag, {url});
   });
 
   it('should set tag name', () => {

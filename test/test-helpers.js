@@ -24,7 +24,7 @@ export class ReactTest {
   render(componentClass, props, ref = this.ref) {
     let component = React.createElement(
       componentClass,
-      {...props, ref: ref}
+      {...props, ref, backend: this.backend}
     );
     act(() => {
       let root = createRoot(this.document.getElementById('root'));

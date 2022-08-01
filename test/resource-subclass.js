@@ -14,10 +14,10 @@ export default function addResourceTests(
 
     describe('componentDidMount', () => {
 
-      let backend, ref, url = 'https://api.com/resources/1';
+      let ref, url = 'https://api.com/resources/1';
 
       beforeEach(() => {
-        ({ backend, ref } = reactTest);
+        ({ ref } = reactTest);
       });
 
       describe('embedded', () => {
@@ -35,7 +35,7 @@ export default function addResourceTests(
         }
 
         beforeEach(() => {
-          reactTest.render(MockResource, {url, backend, embed});
+          reactTest.render(MockResource, {url, embed});
         });
 
         it('should call readResource on "embed" prop', () => {
@@ -51,12 +51,12 @@ export default function addResourceTests(
       describe('base case', () => {
 
         beforeEach(() => {
-          reactTest.render(resourceClass, {url, backend});
+          reactTest.render(resourceClass, {url});
         });
 
         it('should call loadResource on the backend', () => {
           assert.calledOnceWith(
-            backend,
+            reactTest.backend,
             'loadResource',
             url
           );

@@ -124,11 +124,11 @@ describeComponent('ImageViewer', reactTest => {
 
   addResourceTests(ImageViewer);
 
-  let backend, ref, document, url = 'https://api.com/images/1';
+  let ref, document, url = 'https://api.com/images/1';
 
   beforeEach(() => {
-    ({backend, ref, document} = reactTest);
-    reactTest.render(ImageViewer, {url, backend});
+    ({ref, document} = reactTest);
+    reactTest.render(ImageViewer, {url});
   });
 
   addButtonTests('like', reactTest);
