@@ -16,7 +16,6 @@ describeComponent('Tag', reactTest => {
 
   beforeEach(() => {
     ({ backend, ref, document } = reactTest);
-    backend.loadResource = sinon.fake();
     reactTest.render(Tag, {backend});
   });
 

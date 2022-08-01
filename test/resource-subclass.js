@@ -18,7 +18,6 @@ export default function addResourceTests(
 
       beforeEach(() => {
         ({ backend, ref } = reactTest);
-        backend.loadResource = sinon.fake();
       });
 
       describe('embedded', () => {

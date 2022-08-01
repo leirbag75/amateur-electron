@@ -15,7 +15,6 @@ describeComponent('Thumbnail', reactTest => {
   beforeEach(() => {
     ({ document } = reactTest);
     let { backend } = reactTest;
-    backend.loadResource = sinon.fake();
     reactTest.render(Thumbnail, {backend, url});
   });
 
