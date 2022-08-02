@@ -16,7 +16,6 @@ describeComponent(Tag, reactTest => {
 
   beforeEach(() => {
     ({ ref, document } = reactTest);
-    reactTest.render(Tag, {url});
   });
 
   it('should set tag name', () => {

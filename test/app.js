@@ -22,7 +22,6 @@ describeComponent(App, reactTest => {
     let app;
 
     beforeEach(() => {
-      reactTest.render(App, {});
       app = reactTest.ref.current;
     });
 

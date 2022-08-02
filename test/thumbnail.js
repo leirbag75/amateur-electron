@@ -3,23 +3,22 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Thumbnail from '../src/thumbnail';
 import assert from './assertions';
-import { describeComponent, simulateClick } from './test-helpers';
+import { describeComponent, simulateClick, url } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
 describeComponent(Thumbnail, reactTest => {
 
   addResourceTests(Thumbnail);
 
-  let document, url = 'https://api.com/resource';
+  let document;
 
   beforeEach(() => {
     ({ document } = reactTest);
-    reactTest.render(Thumbnail, {url});
   });
 
   describe('image rendering', () => {
 
-    let url =  'https://image.com/image.jpeg', image, ref;
+    let image, ref;
 
     beforeEach(() => {
       ({ ref } = reactTest);

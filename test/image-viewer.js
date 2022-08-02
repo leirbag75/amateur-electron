@@ -128,7 +128,6 @@ describeComponent(ImageViewer, reactTest => {
 
   beforeEach(() => {
     ({ref, document} = reactTest);
-    reactTest.render(ImageViewer, {url});
   });
 
   addButtonTests('like', reactTest);

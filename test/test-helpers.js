@@ -6,6 +6,8 @@ import { JSDOM } from 'jsdom';
 import { strict as assert } from 'assert';
 import sinon from 'sinon';
 
+export const url = 'https://api.com/resources/1';
+
 export class ReactTest {
 
   start() {
@@ -36,16 +38,10 @@ export class ReactTest {
 
 export function describeComponent(componentClass, testFunction) {
 
-  let reactTest = new ReactTest();
-
-  describe(componentClass.name, () => {
+  withReactTest(componentClass.name, reactTest => {
 
     beforeEach(() => {
-      reactTest.start();
-    });
-
-    afterEach(() => {
-      reactTest.finish();
+      reactTest.render(componentClass, {url});
     });
 
     testFunction(reactTest);

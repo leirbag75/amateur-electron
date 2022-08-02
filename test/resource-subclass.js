@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Resource from '../src/resource';
 import assert from './assertions';
-import { withReactTest } from './test-helpers';
+import { withReactTest, url } from './test-helpers';
 
 export default function addResourceTests(
   resourceClass,
@@ -14,7 +14,7 @@ export default function addResourceTests(
 
     describe('componentDidMount', () => {
 
-      let ref, url = 'https://api.com/resources/1';
+      let ref;
 
       beforeEach(() => {
         ({ ref } = reactTest);
