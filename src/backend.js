@@ -3,7 +3,8 @@ import ImageViewer from './image-viewer';
 
 export default class Backend {
 
-  constructor() {
+  constructor(http) {
+    this.http = http;
     this.ref = React.createRef();
   }
 
@@ -15,7 +16,8 @@ export default class Backend {
     this.app.setPage(<ImageViewer url={url} backend={this} />);
   }
 
-  loadResource() {
+  loadResource(url) {
+    return this.http.fetch(url);
   }
 
 }
