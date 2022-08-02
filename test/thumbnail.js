@@ -6,7 +6,7 @@ import assert from './assertions';
 import { describeComponent, simulateClick } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
-describeComponent('Thumbnail', reactTest => {
+describeComponent(Thumbnail, reactTest => {
 
   addResourceTests(Thumbnail);
 

@@ -15,7 +15,7 @@ class MockPage extends React.Component {
 
 }
 
-describeComponent('App', reactTest => {
+describeComponent(App, reactTest => {
 
   describe('page switching behavior', () => {
 

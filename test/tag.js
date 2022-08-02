@@ -8,7 +8,7 @@ import { describeComponent  } from './test-helpers';
 import React from 'react';
 import addResourceTests from './resource-subclass.js';
 
-describeComponent('Tag', reactTest => {
+describeComponent(Tag, reactTest => {
 
   addResourceTests(Tag);
 

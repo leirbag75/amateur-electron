@@ -4,11 +4,11 @@ import sinon from 'sinon';
 import { strict as assert } from 'assert';
 import React from 'react';
 import Backend from '../src/backend';
-import { describeComponent } from './test-helpers';
+import { withReactTest } from './test-helpers';
 import App from '../src/app';
 import ImageViewer from '../src/image-viewer';
 
-describeComponent('backend', reactTest => {
+withReactTest('backend', reactTest => {
 
   let backend, app;
 

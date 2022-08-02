@@ -3,14 +3,14 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Resource from '../src/resource';
 import assert from './assertions';
-import { describeComponent } from './test-helpers';
+import { withReactTest } from './test-helpers';
 
 export default function addResourceTests(
   resourceClass,
   description = 'as Resource'
 ) {
 
-  describeComponent(description, reactTest => {
+  withReactTest(description, reactTest => {
 
     describe('componentDidMount', () => {
 

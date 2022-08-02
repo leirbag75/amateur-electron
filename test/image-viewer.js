@@ -120,7 +120,7 @@ function addButtonTests(buttonName, reactTest) {
 
 }
 
-describeComponent('ImageViewer', reactTest => {
+describeComponent(ImageViewer, reactTest => {
 
   addResourceTests(ImageViewer);
 

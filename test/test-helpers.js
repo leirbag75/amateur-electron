@@ -34,7 +34,27 @@ export class ReactTest {
 
 }
 
-export function describeComponent(descriptionString, testFunction) {
+export function describeComponent(componentClass, testFunction) {
+
+  let reactTest = new ReactTest();
+
+  describe(componentClass.name, () => {
+
+    beforeEach(() => {
+      reactTest.start();
+    });
+
+    afterEach(() => {
+      reactTest.finish();
+    });
+
+    testFunction(reactTest);
+
+  });
+
+}
+
+export function withReactTest(descriptionString, testFunction) {
 
   let reactTest = new ReactTest();
 
