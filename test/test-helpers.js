@@ -5,13 +5,14 @@ import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 import { strict as assert } from 'assert';
 import sinon from 'sinon';
+import Backend from '../src/backend';
 
 export const url = 'https://api.com/resources/1';
 
 export class ReactTest {
 
   start() {
-    this.backend = {loadResource: sinon.fake()};
+    this.backend = new Backend({fetch: sinon.fake()});
     this.ref = React.createRef();
     let dom = new JSDOM('<!DOCTYPE html><body><div id="root"></div></body>');
     this.originalWindow = global.window;

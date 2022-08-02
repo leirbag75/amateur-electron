@@ -51,6 +51,7 @@ export default function addResourceTests(
       describe('base case', () => {
 
         beforeEach(() => {
+          sinon.replace(reactTest.backend, 'loadResource', sinon.fake());
           reactTest.render(resourceClass, {url});
         });
 
