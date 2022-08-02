@@ -46,7 +46,7 @@ describeComponent(Thumbnail, reactTest => {
   });
 
   it('should call "view" callback when image is clicked', () => {
-    let { ref, document } = reactTest;
+    let { ref } = reactTest;
     sinon.replace(ref.current, 'view', sinon.fake());
     act(() => {ref.current.setSrc('');}); // Trigger re-render
     simulateClick(document, 'img.thumbnail');
