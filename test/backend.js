@@ -9,7 +9,7 @@ import App from '../src/app';
 import ImageViewer from '../src/image-viewer';
 
 class MockHttp {
-  fetch = sinon.fake.returns(1);
+  fetch = sinon.fake.returns({then: sinon.fake()});
 }
 
 withReactTest('backend', reactTest => {
@@ -39,7 +39,7 @@ withReactTest('backend', reactTest => {
 
     it('should return whatever http.fetch returns', () => {
       let result = backend.loadResource(url);
-      assert.equal(result, 1);
+      assert.equal(result, backend.http.fetch(url));
     });
 
     it('should pass the given URL to http.fetch', () => {
