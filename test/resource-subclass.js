@@ -51,7 +51,12 @@ export default function addResourceTests(
       describe('base case', () => {
 
         beforeEach(() => {
-          sinon.replace(reactTest.backend, 'loadResource', sinon.fake());
+          let loadResource = sinon
+            .fake
+            .returns({
+              then: sinon.fake()
+            });
+          sinon.replace(reactTest.backend, 'loadResource', loadResource);
           reactTest.render(resourceClass, {url});
         });
 
@@ -62,6 +67,17 @@ export default function addResourceTests(
             url
           );
         });
+
+        it(
+          'should pass readResource to the promise returned by loadResource',
+          () => {
+            assert.calledOnceWith(
+              reactTest.backend.loadResource(),
+              'then',
+              ref.current.readResource
+            );
+          }
+        );
 
         it('should call read on all readers', () => {
           let viewer = ref.current;

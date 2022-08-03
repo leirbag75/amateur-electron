@@ -9,10 +9,16 @@ import Backend from '../src/backend';
 
 export const url = 'https://api.com/resources/1';
 
+class MockHttp {
+  fetch(url) {
+    return {then: sinon.fake()};
+  }
+}
+
 export class ReactTest {
 
   start() {
-    this.backend = new Backend({fetch: sinon.fake()});
+    this.backend = new Backend(new MockHttp());
     this.ref = React.createRef();
     let dom = new JSDOM('<!DOCTYPE html><body><div id="root"></div></body>');
     this.originalWindow = global.window;
