@@ -4,8 +4,11 @@ import sinon from 'sinon';
 import HomePage from '../src/home-page';
 import assert from './assertions';
 import { describeComponent, assertCalledOnceWith  } from './test-helpers';
+import addResourceTests from './resource-subclass';
 
 describeComponent(HomePage, reactTest => {
+
+  addResourceTests(HomePage);
 
   it('should render thumbnails', () => {
     let thumbnailObjects = [

@@ -1,7 +1,8 @@
 import React from 'react';
+import Resource from './resource';
 import Thumbnail from './thumbnail';
 
-export default class HomePage extends React.Component {
+export default class HomePage extends Resource {
 
   constructor(props) {
     super(props);
