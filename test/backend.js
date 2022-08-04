@@ -49,4 +49,17 @@ withReactTest('backend', reactTest => {
 
   });
 
+  describe('like', () => {
+
+    it('should post to the given URL', () => {
+      let url = 'https://api.com/images/1/likes';
+      backend.like(url);
+      assert.ok(backend.http.fetch.calledOnce, 'http.fetch not called');
+      let args = backend.http.fetch.getCall(0).args;
+      assert.equal(args[0], url);
+      assert.equal(args[1].method, 'POST');
+    });
+
+  });
+
 });

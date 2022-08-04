@@ -20,4 +20,8 @@ export default class Backend {
     return this.http.fetch(url);
   }
 
+  like(url) {
+    this.http.fetch(url, {method: 'POST'});
+  }
+
 }
