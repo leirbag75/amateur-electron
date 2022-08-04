@@ -1,12 +1,9 @@
 import React from 'react';
 import Resource from './resource';
+import { FieldReader } from './readers';
 
 let readers = [
-  {
-    read(resource, viewer) {
-      viewer.setSrc(resource.src);
-    }
-  }
+  new FieldReader('src', 'setSrc')
 ];
 
 export default class Thumbnail extends Resource {
