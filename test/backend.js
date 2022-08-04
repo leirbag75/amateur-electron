@@ -18,11 +18,11 @@ withReactTest('backend', reactTest => {
 
   beforeEach(() => {
     backend = new Backend(new MockHttp());
-    reactTest.render(App, {}, backend.ref);
   });
 
   describe('viewImage', () => {
     it('should switch to the image viewer', () => {
+      reactTest.render(App, {}, backend.ref);
       let url = 'https://site.com/image.jpeg';
       act(() => {
         backend.viewImage(url);
