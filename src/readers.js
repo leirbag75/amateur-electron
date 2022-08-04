@@ -27,3 +27,18 @@ export class LinkReader {
   }
 
 }
+
+export class LinkListReader {
+
+  constructor(rel, method) {
+    this.rel = rel;
+    this.method = method;
+  }
+
+  read(resource, viewer) {
+    let links = resource.links.filter(link => link.rel === this.rel);
+    if(links.length > 0)
+      viewer[this.method](links);
+  }
+
+}

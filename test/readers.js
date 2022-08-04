@@ -38,4 +38,27 @@ describe('readers', () => {
 
   });
 
+  describe('LinkListReader', () => {
+
+    it('should call the method with all links of the given rel', () => {
+      let viewer = {setTags: sinon.fake()};
+      let reader = new readers.LinkListReader('tag', 'setTags');
+      let links = [
+        {rel: 'tag', href: 'api.com/tags/1'},
+        {rel: 'tag', href: 'api.com/tags/2'}
+      ];
+      reader.read({links: links}, viewer);
+      assert.ok(viewer.setTags.calledOnce, 'setTags not called once');
+      let args = viewer.setTags.getCall(0).args;
+      for(let i = 0; i < links.length; ++i)
+        assert.equal(args[0][i], links[i]);
+    });
+
+    it('should not call the method if no links are found', () => {
+      let reader = new readers.LinkListReader('tag', 'nonexistent');
+      reader.read({links: []}, {});
+    });
+
+  });
+
 });
