@@ -1,12 +1,9 @@
 import React from 'react';
 import Resource from './resource';
+import { FieldReader } from './readers';
 
 let readers = [
-  {
-    read(resource, viewer) {
-      viewer.setName(resource.name);
-    }
-  }
+  new FieldReader('name', 'setName')
 ]
 
 export default class Tag extends Resource {
