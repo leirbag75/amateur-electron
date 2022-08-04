@@ -21,4 +21,21 @@ describe('readers', () => {
 
   });
 
+  describe('LinkReader', () => {
+
+    it('should call the given method on the link with the given rel', () => {
+      let viewer = {enableLiking: sinon.fake()};
+      let link = {rel: 'like', href: 'api.com/like'};
+      let reader = new readers.LinkReader('like', 'enableLiking');
+      reader.read({links: [link]}, viewer);
+      assert.calledOnceWith(viewer, 'enableLiking', link);
+    });
+
+    it('should not call the method if the link does not exist', () => {
+      let reader = new readers.LinkReader('like', 'nonexistent');
+      reader.read({links: []}, {});
+    });
+
+  });
+
 });

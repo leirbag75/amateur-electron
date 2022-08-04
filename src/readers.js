@@ -12,3 +12,18 @@ export class FieldReader {
   }
 
 }
+
+export class LinkReader {
+
+  constructor(rel, method) {
+    this.rel = rel;
+    this.method = method;
+  }
+
+  read(resource, viewer) {
+    let link = resource.links.find(link => link.rel === this.rel);
+    if(link)
+      viewer[this.method](link);
+  }
+
+}
