@@ -9,3 +9,4 @@ require('./resource');
 require('./tag');
 require('./thumbnail');
 require('./home-page');
+require('./readers');
