@@ -24,4 +24,6 @@ export default class Backend {
     this.http.fetch(url, {method: 'POST'});
   }
 
+  unlike = this.like;
+
 }
