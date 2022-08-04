@@ -1,6 +1,14 @@
 import React from 'react';
 import Resource from './resource';
 
+let readers = [
+  {
+    read(resource, viewer) {
+      viewer.setSrc(resource.src);
+    }
+  }
+];
+
 export default class Thumbnail extends Resource {
 
   constructor(props) {
@@ -12,6 +20,10 @@ export default class Thumbnail extends Resource {
 
   setSrc(src) {
     this.setState({src});
+  }
+
+  readers() {
+    return readers;
   }
 
   view = () => {
