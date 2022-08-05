@@ -6,6 +6,12 @@ import assert from './assertions';
 import { describeComponent, simulateClick } from './test-helpers';
 import addResourceTests from './resource-subclass';
 
+let imageSelector = 'img.image-viewed';
+
+function imageSrc(image) {
+  return image.src;
+}
+
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -135,16 +141,16 @@ describeComponent(ImageViewer, reactTest => {
   addButtonTests('unlike', reactTest);
 
   it('should render the image', () => {
-    assert.rendered(document, 'img.image-viewed');
+    assert.rendered(document, imageSelector);
   });
 
   it('should let the src of the image be changed', () => {
-    let image = document.querySelector('img.image-viewed')
+    let image = document.querySelector(imageSelector)
     let src = 'www.image.com/image.jpeg'
     act(() => {
       ref.current.setSrc(src);
     });
-    assert.equal(image.src, src, "Image's src not changed");
+    assert.equal(imageSrc(image), src, "Image's src not changed");
   });
 
   it('should render tags', () => {
