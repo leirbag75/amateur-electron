@@ -6,3 +6,13 @@
   object-fit: cover;
 
 }
+
+.image-viewed {
+
+  height: 60vw;
+  width: 60vw;
+  display: block;
+  margin: auto;
+  object-fit: contain;
+
+}
