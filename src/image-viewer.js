@@ -56,7 +56,10 @@ export default class ImageViewer extends Resource {
         />
         <div className="tag-list">
           {this.state.tags.map(tag => <Tag
-             key={tag.href} backend={this.props.backend} embed={tag.embed}
+             key={tag.href}
+             backend={this.props.backend}
+             url={tag.href}
+             embed={tag.embed}
           />)}
         </div>
       </div>
