@@ -3,7 +3,13 @@ import { act } from 'react-dom/test-utils';
 import sinon from 'sinon';
 import Thumbnail from '../src/thumbnail';
 import assert from './assertions';
-import { describeComponent, simulateClick, url } from './test-helpers';
+import {
+  describeComponent,
+  simulateClick,
+  url,
+  thumbnailSelector,
+  thumbnailSrc
+} from './test-helpers';
 import addResourceTests from './resource-subclass';
 
 describeComponent(Thumbnail, reactTest => {
@@ -22,7 +28,7 @@ describeComponent(Thumbnail, reactTest => {
 
     beforeEach(() => {
       ({ ref } = reactTest);
-      image = document.querySelector('img.thumbnail');
+      image = document.querySelector(thumbnailSelector);
     });
 
     it('should render image', () => {
@@ -33,7 +39,7 @@ describeComponent(Thumbnail, reactTest => {
       act(() => {
         ref.current.setSrc(url);
       });
-      assert.equal(image.src, url, 'Thumbnail image src not set');
+      assert.equal(thumbnailSrc(image), url, 'Thumbnail image src not set');
     });
 
   });
@@ -49,7 +55,7 @@ describeComponent(Thumbnail, reactTest => {
     let { ref } = reactTest;
     sinon.replace(ref.current, 'view', sinon.fake());
     act(() => {ref.current.setSrc('');}); // Trigger re-render
-    simulateClick(document, 'img.thumbnail');
+    simulateClick(document, thumbnailSelector);
     assert.ok(
       ref.current.view.calledOnce,
       'Thumbnail clicked, but "view" callback not called'

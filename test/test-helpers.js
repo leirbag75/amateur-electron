@@ -83,3 +83,9 @@ export function simulateClick(document, selector) {
     element.dispatchEvent(new window.MouseEvent('click', {bubbles: true}));
   });
 }
+
+export const thumbnailSelector = 'img.thumbnail';
+
+export function thumbnailSrc(image) {
+  return image.src;
+}
