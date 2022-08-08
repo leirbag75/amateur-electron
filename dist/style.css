@@ -12,6 +12,15 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+  transition: 300ms;
+
+}
+
+.thumbnail:hover {
+
+  cursor: pointer;
+  transform: scale(1.33);
+  transition: 300ms;
 
 }
 
