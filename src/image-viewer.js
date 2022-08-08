@@ -10,7 +10,8 @@ export default class ImageViewer extends Resource {
       relLike: null,
       relUnlike: null,
       src: '',
-      tags: []
+      tags: [],
+      likes: 0
     };
   }
 
@@ -42,6 +43,10 @@ export default class ImageViewer extends Resource {
     this.setState({tags: [...tags]});
   }
 
+  setLikes(likes) {
+    this.setState({likes});
+  }
+
   render() {
     return (
       <div>
@@ -50,6 +55,7 @@ export default class ImageViewer extends Resource {
           className={`like-button ${this.state.relLike? 'active': ''}`}
           onClick={this.like}
         />
+        <span className="like-count">{this.state.likes}</span>
         <button
           className={`unlike-button ${this.state.relUnlike? 'active': ''}`}
           onClick={this.unlike}

@@ -170,4 +170,19 @@ describeComponent(ImageViewer, reactTest => {
     );
   });
 
+  describe('like count', () => {
+
+    it('should render the like count', () => {
+      assert.rendered(document, '.like-count');
+    });
+
+    it('should set the like count', () => {
+      act(() => {
+        ref.current.setLikes(2);
+      });
+      assert.equal(document.querySelector('.like-count').innerHTML, '2');
+    });
+
+  });
+
 });
