@@ -28,7 +28,7 @@ describe('readers', () => {
       let link = {rel: 'like', href: 'api.com/like'};
       let reader = new readers.LinkReader('like', 'enableLiking');
       reader.read({links: [link]}, viewer);
-      assert.calledOnceWith(viewer, 'enableLiking', link);
+      assert.calledOnceWith(viewer, 'enableLiking', link.href);
     });
 
     it('should not call the method if the link does not exist', () => {
