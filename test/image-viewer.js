@@ -185,4 +185,46 @@ describeComponent(ImageViewer, reactTest => {
 
   });
 
+  describe('imageViewer.readResource', () => {
+
+    it('should read certain properties', () => {
+      let imageViewer = reactTest.ref.current;
+      let tags = [
+        {
+          rel: 'tag',
+          href: 'https://api.com/tags/1',
+        },
+        {
+          rel: 'tag',
+          href: 'https://api.com/tags/2',
+        }
+      ];
+      let relLike = 'https://api.com/likes'
+      let relUnlike =  'https://api.com/unlikes';
+      let src = 'https://image.com/image.jpeg';
+      act(() => {
+        imageViewer.readResource({
+          links: [
+            {
+              rel: 'like',
+              href: relLike
+            },
+            {
+              rel: 'unlike',
+              href: relUnlike
+            },
+            ...tags
+          ],
+          src,
+          likes: 3,
+        })
+      });
+      assert.equal(imageViewer.state.src, src);
+      assert.equal(imageViewer.state.relLike, relLike);
+      assert.equal(imageViewer.state.relUnlike, relUnlike);
+      assert.deepEqual(imageViewer.state.tags, tags);
+      assert.equal(imageViewer.state.likes, 3);
+    });
+  });
+
 });

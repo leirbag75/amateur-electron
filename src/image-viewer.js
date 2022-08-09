@@ -1,6 +1,15 @@
 import React from 'react';
 import Resource from './resource';
 import Tag from './tag';
+import * as Reader from './readers';
+
+let readers = [
+  new Reader.LinkReader('like', 'enableLiking'),
+  new Reader.LinkReader('unlike', 'enableUnliking'),
+  new Reader.FieldReader('src', 'setSrc'),
+  new Reader.LinkListReader('tag', 'setTags'),
+  new Reader.FieldReader('likes', 'setLikes')
+];
 
 export default class ImageViewer extends Resource {
 
@@ -13,6 +22,10 @@ export default class ImageViewer extends Resource {
       tags: [],
       likes: 0
     };
+  }
+
+  readers() {
+    return readers;
   }
 
   like = () => {
