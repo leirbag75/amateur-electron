@@ -1,6 +1,11 @@
 import React from 'react';
 import Resource from './resource';
 import Thumbnail from './thumbnail';
+import { LinkListReader } from './readers';
+
+let readers = [
+  new LinkListReader('collection-image', 'setThumbnails')
+];
 
 export default class HomePage extends Resource {
 
@@ -13,6 +18,10 @@ export default class HomePage extends Resource {
 
   setThumbnails(thumbnails) {
     this.setState({thumbnails});
+  }
+
+  readers() {
+    return readers;
   }
 
   render() {

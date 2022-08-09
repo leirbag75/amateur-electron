@@ -48,4 +48,22 @@ describeComponent(HomePage, reactTest => {
       );
   });
 
+  it('should read collection images', () => {
+    let homePage = reactTest.ref.current;
+    let collectionImages = [
+      {
+        rel: 'collection-image',
+        href: 'https://api.com/collection/1'
+      },
+      {
+        rel: 'collection-image',
+        href: 'https://api.com/collection/2'
+      }
+    ];
+    act(() => {
+      homePage.readResource({links: collectionImages});
+    });
+    assert.deepEqual(homePage.state.thumbnails, collectionImages);
+  });
+
 });
