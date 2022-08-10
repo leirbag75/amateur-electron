@@ -2,6 +2,7 @@ import React from 'react';
 import Resource from './resource';
 import Tag from './tag';
 import * as Reader from './readers';
+import Button from './button';
 
 let readers = [
   new Reader.LinkReader('like', 'enableLiking'),
@@ -64,15 +65,19 @@ export default class ImageViewer extends Resource {
     return (
       <div>
         <img className="image-viewed" src={this.state.src} />
-        <button
+        <Button
           className={`like-button ${this.state.relLike? 'active': ''}`}
           onClick={this.like}
-        />
+        >
+          thumb_up
+        </Button>
         <span className="like-count">{this.state.likes}</span>
-        <button
+        <Button
           className={`unlike-button ${this.state.relUnlike? 'active': ''}`}
           onClick={this.unlike}
-        />
+        >
+          thumb_down
+        </Button>
         <div className="tag-list">
           {this.state.tags.map(tag => <Tag
              key={tag.href}

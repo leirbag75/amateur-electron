@@ -41,3 +41,72 @@
   flex-wrap: wrap;
 
 }
+
+@keyframes click-button {
+
+  0%, 100% {
+  }
+
+  20% {
+    transform: rotate(10deg) translate(2px, 0);
+  }
+
+  40% {
+    transform: scale(1.4) rotate(-30deg) translate(3px);
+    color: rgb(0, 220, 255);
+  }
+
+  50% {
+    transform: scale(1) rotate(-30deg) translate(6px);
+    color: rgb(0, 220, 255);
+  }
+
+  70% {
+    color: rgb(0, 220, 255);
+  }
+
+}
+
+@keyframes click-button2 {
+
+  0%, 100% {
+  }
+
+  20% {
+    transform: rotate(10deg) translate(2px, 0);
+  }
+
+  40% {
+    transform: scale(1.4) rotate(-30deg) translate(3px);
+    color: rgb(0, 220, 255);
+  }
+
+  50% {
+    transform: scale(1) rotate(-30deg) translate(6px);
+    color: rgb(0, 220, 255);
+  }
+
+  70% {
+    color: rgb(0, 220, 255);
+  }
+
+}
+
+.animation1 {
+
+  animation: click-button 0.5s;
+
+}
+
+.animation2 {
+
+  animation: click-button2 0.5s;
+
+}
+
+.like-button, .unlike-button {
+
+  cursor: pointer;
+  user-select: none;
+
+}
