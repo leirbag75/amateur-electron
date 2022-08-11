@@ -110,3 +110,12 @@
   user-select: none;
 
 }
+
+.like-controls {
+
+  display: flex;
+  margin: 20px auto;
+  width: 60vw;
+  justify-content: space-around;
+
+}
