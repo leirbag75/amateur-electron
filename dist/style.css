@@ -108,6 +108,19 @@
 
   cursor: pointer;
   user-select: none;
+  border-style: solid;
+  border-width: thin;
+  border-color: transparent;
+  border-radius: 5px;
+  padding: 10px;
+
+}
+
+.active:hover {
+
+  border-color: initial;
+  color: rgb(0, 220, 255);
+  transition: 0.5s;
 
 }
 
