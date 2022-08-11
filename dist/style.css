@@ -48,21 +48,19 @@
   }
 
   20% {
-    transform: rotate(10deg) translate(2px, 0);
+    transform: scale(0.9);
   }
 
   40% {
-    transform: scale(1.4) rotate(-30deg) translate(3px);
-    color: rgb(0, 220, 255);
+    transform: scale(1.4);
   }
 
   50% {
-    transform: scale(1) rotate(-30deg) translate(6px);
-    color: rgb(0, 220, 255);
+    transform: scale(1.4);
   }
 
-  70% {
-    color: rgb(0, 220, 255);
+  90% {
+    transform: scale(1);
   }
 
 }
@@ -73,21 +71,19 @@
   }
 
   20% {
-    transform: rotate(10deg) translate(2px, 0);
+    transform: scale(0.9);
   }
 
   40% {
-    transform: scale(1.4) rotate(-30deg) translate(3px);
-    color: rgb(0, 220, 255);
+    transform: scale(1.4);
   }
 
   50% {
-    transform: scale(1) rotate(-30deg) translate(6px);
-    color: rgb(0, 220, 255);
+    transform: scale(1.4);
   }
 
-  70% {
-    color: rgb(0, 220, 255);
+  90% {
+    transform: scale(1);
   }
 
 }
