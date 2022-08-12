@@ -88,13 +88,13 @@
 
 }
 
-.animation1 {
+.active.animation1 {
 
   animation: click-button 0.5s;
 
 }
 
-.animation2 {
+.active.animation2 {
 
   animation: click-button2 0.5s;
 
