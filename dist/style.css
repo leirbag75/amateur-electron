@@ -101,9 +101,14 @@
 }
 
 .like-button, .unlike-button {
+  user-select: none;
+  color: rgb(128, 128, 128);
+}
+
+.active {
 
   cursor: pointer;
-  user-select: none;
+  color: unset;
   border-style: solid;
   border-width: thin;
   border-color: transparent;
