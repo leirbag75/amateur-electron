@@ -1,3 +1,5 @@
+const { contextBridge, ipcRenderer } = require('electron');
+
 window.addEventListener('DOMContentLoaded', () => {
   for(let dependency of ['chrome', 'node', 'electron']) {
     let selector = `${dependency}-version`;
@@ -5,5 +7,11 @@ window.addEventListener('DOMContentLoaded', () => {
     let element = document.getElementById(selector);
     if(element)
       element.innerText = text;
+  }
+});
+
+contextBridge.exposeInMainWorld('backend', {
+  fetch(index) {
+    return ipcRenderer.invoke('fetch', index);
   }
 });
