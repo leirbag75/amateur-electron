@@ -40,7 +40,7 @@ class ImageHandler extends FetchHandler {
       let libraryStatement = this.db.prepare("SELECT src, likes FROM library_entry WHERE id = ?");
       let row = await libraryStatement.get(index);
       libraryStatement.finalize();
-      let tagStatement = this.db.prepare("SELECT id, name FROM tag JOIN tag_entry ON tag.id = tag_entry.tag_id WHERE tag_entry.library_entry_id = ?");
+      let tagStatement = this.db.prepare("SELECT tag.id, tag.name FROM tag JOIN tag_entry ON tag.id = tag_entry.tag_id WHERE tag_entry.library_entry_id = ?");
       let tags = await tagStatement.all(index);
       tagStatement.finalize();
       return {
