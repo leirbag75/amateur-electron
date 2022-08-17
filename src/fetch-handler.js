@@ -15,18 +15,43 @@ class FetchHandler {
       return new TagHandler(url, db);
   }
 
+  async getLibraryEntries() {
+    let rows = await this.db.all("SELECT id FROM library_entry");
+    return {
+      links: rows.map(row => ({
+        rel: 'collection-image',
+        href:`images/${row.id}`
+      }))
+    };
+  }
+
+  async getLibraryEntry(index) {
+    let statement = this.db.prepare("SELECT src, likes FROM library_entry WHERE id = ?");
+    let row = await statement.get(index);
+    statement.finalize();
+    return row;
+  }
+
+  async getTags(libraryEntryIndex) {
+    let statement = this.db.prepare("SELECT tag.id, tag.name FROM tag JOIN tag_entry ON tag.id = tag_entry.tag_id WHERE tag_entry.library_entry_id = ?");
+    let tags = await statement.all(libraryEntryIndex);
+    statement.finalize();
+    return tags;
+  }
+
+  async getTag(index) {
+    let statement = this.db.prepare("SELECT name FROM tag WHERE id = ?");
+    let tag = await statement.get(index);
+    statement.finalize();
+    return tag;
+  }
+
 };
 
 class EntryHandler extends FetchHandler {
 
   async handle() {
-    return this.db.all("SELECT id FROM library_entry")
-      .then(rows => ({
-        links: rows.map(row => ({
-          rel: 'collection-image',
-          href:`images/${row.id}`
-        }))
-      }));
+    return this.getLibraryEntries();
   }
 
 }
@@ -37,12 +62,8 @@ class ImageHandler extends FetchHandler {
     let match = this.url.match(/images\/([0-9]+)/);
     if(match) {
       let index = parseInt(match[1]);
-      let libraryStatement = this.db.prepare("SELECT src, likes FROM library_entry WHERE id = ?");
-      let row = await libraryStatement.get(index);
-      libraryStatement.finalize();
-      let tagStatement = this.db.prepare("SELECT tag.id, tag.name FROM tag JOIN tag_entry ON tag.id = tag_entry.tag_id WHERE tag_entry.library_entry_id = ?");
-      let tags = await tagStatement.all(index);
-      tagStatement.finalize();
+      let row = await this.getLibraryEntry(index);
+      let tags = await this.getTags(index);
       return {
         ...row,
         links: tags.map(tag => ({
@@ -62,13 +83,10 @@ class TagHandler extends FetchHandler {
 
   async handle() {
     let match = this.url.match(/tags\/([0-9]+)/);
-    let index = parseInt(match[1]);
-    let statement = this.db.prepare("SELECT name FROM tag WHERE id = ?");
-    return statement.get(index)
-      .then(data => {
-        statement.finalize();
-        return data;
-      });
+    if(match) {
+      let index = parseInt(match[1]);
+      return this.getTag(index);
+    }
   }
 
 }
