@@ -98,10 +98,7 @@ class ImageHandler extends FetchHandler {
       ...row,
       links: tags.map(tag => ({
         rel: 'tag',
-        href: makeTagUrl(tag.id),
-        embed: {
-          name: tag.name
-        }
+        href: makeTagUrl(tag.id)
       }))
     };
   }
