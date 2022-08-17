@@ -72,7 +72,7 @@ class FetchHandler {
     return tag;
   }
 
-};
+}
 
 class EntryHandler extends FetchHandler {
 
