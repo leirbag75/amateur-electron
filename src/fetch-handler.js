@@ -48,13 +48,7 @@ class FetchHandler {
   }
 
   async getLibraryEntries() {
-    let rows = await this.db.all("SELECT id FROM library_entry");
-    return {
-      links: rows.map(row => ({
-        rel: 'collection-image',
-        href:`images/${row.id}`
-      }))
-    };
+    return this.db.all("SELECT id FROM library_entry");
   }
 
   async getLibraryEntry(index) {
@@ -83,7 +77,13 @@ class FetchHandler {
 class EntryHandler extends FetchHandler {
 
   async handle() {
-    return this.getLibraryEntries();
+    let rows = await this.getLibraryEntries();
+    return {
+      links: rows.map(row => ({
+        rel: 'collection-image',
+        href: makeImageUrl(row.id),
+      }))
+    };
   }
 
 }
