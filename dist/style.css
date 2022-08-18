@@ -114,6 +114,7 @@
 
   cursor: pointer;
   color: unset;
+  transition: 0.5s;
 
 }
 
