@@ -29,6 +29,20 @@ function isLikeUrl(url) {
   return !!url.match(/^images\/[0-9]+\/likes$/);
 }
 
+function makeUnlikeUrl(index) {
+  return `images/${index}/unlikes`;
+}
+
+function unlikeUrlIndex(url) {
+  // Since imageUrlIndex makes no assumptions about where the URL begins or
+  // ends, imageUrlIndex works out to be the same as likeUrlIndex
+  return imageUrlIndex(url);
+}
+
+function isUnlikeUrl(url) {
+  return !!url.match(/^images\/[0-9]+\/unlikes$/);
+}
+
 function makeTagUrl(index) {
   return `tags/${index}`;
 }
@@ -60,6 +74,8 @@ class FetchHandler {
       return new ImageHandler(url, options, db);
     if(isLikeUrl(url) && options.method === 'POST')
       return new LikeHandler(url, options, db);
+    if(isUnlikeUrl(url) && options.method === 'POST')
+      return new UnlikeHandler(url, options, db);
     if(isTagUrl(url))
       return new TagHandler(url, options, db);
   }
@@ -77,6 +93,13 @@ class FetchHandler {
 
   async like(index) {
     let statement = this.db.prepare("UPDATE library_entry SET likes = likes + 1 WHERE id = ?");
+    let result = await statement.run(index);
+    statement.finalize();
+    return result;
+  }
+
+  async unlike(index) {
+    let statement = this.db.prepare("UPDATE library_entry SET likes = likes - 1 WHERE id = ?");
     let result = await statement.run(index);
     statement.finalize();
     return result;
@@ -118,18 +141,22 @@ class ImageHandler extends FetchHandler {
     let index = imageUrlIndex(this.url);
     let row = await this.getLibraryEntry(index);
     let tags = await this.getTags(index);
+    let links = tags.map(tag => ({
+      rel: 'tag',
+      href: makeTagUrl(tag.id)
+    }));
+    links.push({
+      rel: 'like',
+      href: makeLikeUrl(index)
+    });
+    if(row.likes > 0)
+      links.push({
+        rel: 'unlike',
+        href: makeUnlikeUrl(index)
+      });
     return {
       ...row,
-      links: [
-        {
-          rel: 'like',
-          href: makeLikeUrl(index)
-        },
-        ...tags.map(tag => ({
-          rel: 'tag',
-          href: makeTagUrl(tag.id)
-        }))
-      ]
+      links
     };
   }
 
@@ -140,6 +167,15 @@ class LikeHandler extends FetchHandler {
   async handle() {
     let index = likeUrlIndex(this.url);
     return this.like(index);
+  }
+
+}
+
+class UnlikeHandler extends FetchHandler {
+
+  async handle() {
+    let index = unlikeUrlIndex(this.url);
+    return this.unlike(index);
   }
 
 }
