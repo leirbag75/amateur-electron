@@ -11,7 +11,7 @@ export const url = 'https://api.com/resources/1';
 
 class MockHttp {
   fetch(url) {
-    return {then: sinon.fake()};
+    return Promise.resolve(null);
   }
 }
 
