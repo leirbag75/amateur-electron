@@ -103,17 +103,17 @@
 .like-button, .unlike-button {
   user-select: none;
   color: rgb(128, 128, 128);
+  border-style: solid;
+  border-width: thin;
+  border-color: transparent;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .active {
 
   cursor: pointer;
   color: unset;
-  border-style: solid;
-  border-width: thin;
-  border-color: transparent;
-  border-radius: 5px;
-  padding: 10px;
 
 }
 
