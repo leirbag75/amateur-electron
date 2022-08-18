@@ -29,16 +29,23 @@ export default class ImageViewer extends Resource {
     return readers;
   }
 
+  // In like and unlike below, we have to return the promise to allow these
+  // functions to be awaited in tests
+
   like = () => {
     if(!this.state.relLike)
       throw new Error('Liking not enabled');
-    this.props.backend.like(this.state.relLike, this);
+    return this.props.backend.like(this.state.relLike, this).then(() => {
+      this.refresh();
+    });
   }
 
   unlike = () => {
     if(!this.state.relUnlike)
       throw new Error('Unliking not enabled');
-    this.props.backend.unlike(this.state.relUnlike, this);
+    return this.props.backend.unlike(this.state.relUnlike, this).then(() => {
+      this.refresh();
+    });
   }
 
   enableLiking(url) {

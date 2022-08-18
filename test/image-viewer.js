@@ -57,7 +57,6 @@ function addButtonTests(buttonName, reactTest) {
 
     beforeEach(() => {
       ({ backend, ref, document } = reactTest);
-      backend[testAttributes.name] = sinon.fake();
     });
 
     it(
@@ -80,6 +79,9 @@ function addButtonTests(buttonName, reactTest) {
     it(
       `should call "${testAttributes.name}" on the backend if ${testAttributes.gerundName} is enabled`,
       () => {
+        backend[testAttributes.name] = sinon
+          .fake
+          .returns(Promise.resolve(null));
         act(() => {
           ref.current[testAttributes.enableFunctionName](rel);
         });
@@ -121,6 +123,15 @@ function addButtonTests(buttonName, reactTest) {
         );
       }
     );
+
+    it(`should refresh after ${testAttributes.gerundName}`, async () => {
+      sinon.replace(ref.current, 'refresh', sinon.fake());
+      act(() => {
+        ref.current[testAttributes.enableFunctionName](rel);
+      });
+      await ref.current[testAttributes.name]();
+      assert.calledOnceWith(ref.current, 'refresh');
+    });
 
   });
 
