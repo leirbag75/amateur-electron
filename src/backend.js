@@ -21,7 +21,7 @@ export default class Backend {
   }
 
   like(url) {
-    this.http.fetch(url, {method: 'POST'});
+    return this.http.fetch(url, {method: 'POST'});
   }
 
   unlike = this.like;
