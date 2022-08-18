@@ -31,6 +31,12 @@ class Database {
     return new Statement(this.db.prepare(sql, ...args));
   }
 
+  run(sql, ...args) {
+    return new Promise((resolve, reject) => {
+      this.db.run(sql, ...args, defaultCallback(resolve, reject));
+    });
+  }
+
   close() {
     this.db.close();
   }
@@ -52,6 +58,12 @@ class Statement {
   all(...args) {
     return new Promise((resolve, reject) => {
       this.statement.all(...args, defaultCallback(resolve, reject));
+    });
+  }
+
+  run(...args) {
+    return new Promise((resolve, reject) => {
+      this.statement.run(...args, defaultCallback(resolve, reject));
     });
   }
 
