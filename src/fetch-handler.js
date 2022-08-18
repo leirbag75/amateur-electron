@@ -33,18 +33,19 @@ function isTagUrl(url) {
 
 class FetchHandler {
 
-  constructor(url, db) {
+  constructor(url, options, db) {
     this.url = url;
+    this.options = options;
     this.db = db;
   }
 
-  static forUrl(url, db) {
+  static forUrl(url, options, db) {
     if(url === 'entry')
-      return new EntryHandler(url, db);
+      return new EntryHandler(url, options, db);
     if(isImageUrl(url))
-      return new ImageHandler(url, db);
+      return new ImageHandler(url, options, db);
     if(isTagUrl(url))
-      return new TagHandler(url, db);
+      return new TagHandler(url, options, db);
   }
 
   async getLibraryEntries() {

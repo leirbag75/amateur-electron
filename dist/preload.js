@@ -11,7 +11,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 contextBridge.exposeInMainWorld('backend', {
-  fetch(index) {
-    return ipcRenderer.invoke('fetch', index);
+  fetch(index, options = {}) {
+    return ipcRenderer.invoke('fetch', index, options);
   }
 });

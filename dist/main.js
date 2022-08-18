@@ -20,8 +20,8 @@ function createWindow() {
     }
   });
 
-  ipcMain.handle('fetch', (dontCare, url) => {
-    return FetchHandler.forUrl(url, db).handle();
+  ipcMain.handle('fetch', (dontCare, url, options) => {
+    return FetchHandler.forUrl(url, options, db).handle();
   });
 
   win.loadFile(path.join(__dirname, 'index.html'));
