@@ -38,9 +38,11 @@ describe('readers', () => {
       assert.calledOnceWith(viewer, 'enableLiking', link.href);
     });
 
-    it('should not call the method if the link does not exist', () => {
-      let reader = new readers.LinkReader('like', 'nonexistent');
-      reader.read({links: []}, {});
+    it('should call the method with null if the link does not exist', () => {
+      let viewer = {enableLiking: sinon.fake()};
+      let reader = new readers.LinkReader('like', 'enableLiking');
+      reader.read({links: []}, viewer);
+      assert.calledOnceWith(viewer, 'enableLiking', null);
     });
 
   });

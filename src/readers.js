@@ -24,6 +24,8 @@ export class LinkReader {
     let link = resource.links.find(link => link.rel === this.rel);
     if(link)
       viewer[this.method](link.href);
+    else
+      viewer[this.method](null);
   }
 
 }
