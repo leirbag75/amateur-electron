@@ -50,14 +50,33 @@ export default function addResourceTests(
 
       describe('base case', () => {
 
+        // Needed to test that a method is called in componentDidMount; see
+        // above
+        class MockResource extends resourceClass {
+          refresh = sinon.fake();
+        }
+
         beforeEach(() => {
+          reactTest.render(MockResource, {url});
+        });
+
+        it('should call refresh after mounting', () => {
+          assert.calledOnceWith(ref.current, 'refresh');
+        });
+
+      });
+
+      describe('refresh', () => {
+
+        beforeEach(() => {
+          reactTest.render(resourceClass, {url});
           let loadResource = sinon
             .fake
             .returns({
               then: sinon.fake()
             });
           sinon.replace(reactTest.backend, 'loadResource', loadResource);
-          reactTest.render(resourceClass, {url});
+          ref.current.refresh();
         });
 
         it('should call loadResource on the backend', () => {
