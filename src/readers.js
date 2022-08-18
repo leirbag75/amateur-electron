@@ -7,7 +7,7 @@ export class FieldReader {
   }
 
   read(resource, viewer) {
-    if(resource[this.field])
+    if(Object.hasOwn(resource, this.field))
       viewer[this.method](resource[this.field]);
   }
 

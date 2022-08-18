@@ -19,6 +19,13 @@ describe('readers', () => {
       reader.read({}, {});
     });
 
+    it('should call the method even if the value is falsey', () => {
+      let viewer = {setLikes: sinon.fake()};
+      let reader = new readers.FieldReader('likes', 'setLikes');
+      reader.read({likes: 0}, viewer);
+      assert.calledOnceWith(viewer, 'setLikes', 0);
+    });
+
   });
 
   describe('LinkReader', () => {
