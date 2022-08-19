@@ -1,9 +1,8 @@
 import { describe, it } from 'mocha';
 import { act } from 'react-dom/test-utils';
-import sinon from 'sinon';
 import App from '../src/app';
 import HomePage from '../src/home-page';
-import { strict as assert } from 'assert';
+import assert from './assertions';
 import { describeComponent  } from './test-helpers';
 import React from 'react';
 
@@ -26,7 +25,7 @@ describeComponent(App, reactTest => {
     });
 
     it('should start on home page', () => {
-      assert.equal(reactTest.ref.current.currentPage.type, HomePage)
+      assert.equal(app.currentPage.type, HomePage)
     });
 
     it('should switch pages', () => {

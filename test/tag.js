@@ -1,9 +1,8 @@
 import { describe, it } from 'mocha';
 import { act } from 'react-dom/test-utils';
-import sinon from 'sinon';
 import App from '../src/app';
 import Tag from '../src/tag';
-import { strict as assert } from 'assert';
+import assert from './assertions';
 import { describeComponent  } from './test-helpers';
 import React from 'react';
 import addResourceTests from './resource-subclass.js';
