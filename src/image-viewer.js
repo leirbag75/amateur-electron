@@ -3,6 +3,7 @@ import Resource from './resource';
 import Tag from './tag';
 import * as Reader from './readers';
 import Button from './button';
+import { OperationNotEnabled } from './errors';
 
 let readers = [
   new Reader.LinkReader('like', 'enableLiking'),
@@ -34,7 +35,7 @@ export default class ImageViewer extends Resource {
 
   like = () => {
     if(!this.state.relLike)
-      throw new Error('Liking not enabled');
+      throw new OperationNotEnabled('Liking not enabled');
     return this.props.backend.like(this.state.relLike, this).then(() => {
       this.refresh();
     });
@@ -42,7 +43,7 @@ export default class ImageViewer extends Resource {
 
   unlike = () => {
     if(!this.state.relUnlike)
-      throw new Error('Unliking not enabled');
+      throw new OperationNotEnabled('Unliking not enabled');
     return this.props.backend.unlike(this.state.relUnlike, this).then(() => {
       this.refresh();
     });

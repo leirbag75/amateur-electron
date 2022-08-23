@@ -5,6 +5,7 @@ import ImageViewer from '../src/image-viewer';
 import assert from './assertions';
 import { describeComponent, simulateClick } from './test-helpers';
 import addResourceTests from './resource-subclass';
+import { OperationNotEnabled } from '../src/errors';
 
 let imageSelector = 'img.image-viewed';
 
@@ -70,7 +71,7 @@ function addButtonTests(buttonName, reactTest) {
           () => {
             ref.current[testAttributes.name]();
           },
-          Error,
+          OperationNotEnabled,
           `"${testAttributes.name}" called with ${testAttributes.gerundName} disabled, but no error thrown`
         );
       }
