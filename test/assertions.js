@@ -16,4 +16,13 @@ function rendered(
   assert.ok(element, message);
 }
 
-export default { ...assert, calledOnceWith, rendered };
+function notRendered(
+  document,
+  selector,
+  message =  `Element matching ${selector} was rendered.`
+) {
+  let element = document.querySelector(selector);
+  assert.ok(!element, message);
+}
+
+export default { ...assert, calledOnceWith, rendered, notRendered };
