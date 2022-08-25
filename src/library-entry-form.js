@@ -6,6 +6,9 @@ export default class LibraryEntryForm extends React.Component {
     return <div>
         <button className="from-computer">From computer</button>
         <button className="from-web">From web</button>
+        <form>
+          <input type="file" className="file-input" />
+        </form>
       </div>
   }
 
