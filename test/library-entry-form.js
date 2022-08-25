@@ -19,4 +19,11 @@ describeComponent(LibraryEntryForm, reactTest => {
     assert.equal(input.type, 'file');
   });
 
+  it('should show a URL input if the from-web option is clicked', () => {
+    simulateClick(reactTest.document, '.from-web');
+    let input = reactTest.document.querySelector('form input.url-input');
+    assert.ok(input, 'No URL input rendered');
+    assert.equal(input.type, 'url');
+  });
+
 });
