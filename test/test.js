@@ -10,3 +10,4 @@ require('./tag');
 require('./thumbnail');
 require('./home-page');
 require('./readers');
+require('./library-entry-form');
