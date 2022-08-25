@@ -26,4 +26,9 @@ describeComponent(LibraryEntryForm, reactTest => {
     assert.equal(input.type, 'url');
   });
 
+  it('should set a flag to show if the source is set to web', () => {
+    simulateClick(reactTest.document, '.from-web');
+    assert.ok(reactTest.ref.current.state.fromWeb, 'Source not set to "from web"');
+  });
+
 });
