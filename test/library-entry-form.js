@@ -39,4 +39,11 @@ describeComponent(LibraryEntryForm, reactTest => {
     );
   });
 
+  it('should start with the source set to "from computer"', () => {
+    assert.ok(
+      !reactTest.ref.current.state.fromWeb,
+      'Source not set to "fromcomputer"'
+    );
+  });
+
 });
