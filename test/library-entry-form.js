@@ -46,4 +46,14 @@ describeComponent(LibraryEntryForm, reactTest => {
     );
   });
 
+  it('should not render the file input when the source is "from web"', () => {
+    simulateClick(reactTest.document, '.from-web');
+    assert.notRendered(reactTest.document, 'form input.file-input');
+  });
+
+  it('should not render URL input when the source is "from computer"', () => {
+    simulateClick(reactTest.document, '.from-computer');
+    assert.notRendered(reactTest.document, 'form input.url-input');
+  });
+
 });
