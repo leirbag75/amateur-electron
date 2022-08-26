@@ -15,7 +15,9 @@ export default class LibraryEntryForm extends React.Component {
 
   render() {
     return <div>
-        <button className="from-computer">From computer</button>
+        <button className="from-computer" onClick={() => {this.setSource(false);}}>
+          From computer
+        </button>
         <button className="from-web" onClick={() => {this.setSource(true);}}>
           From web
         </button>

@@ -31,4 +31,12 @@ describeComponent(LibraryEntryForm, reactTest => {
     assert.ok(reactTest.ref.current.state.fromWeb, 'Source not set to "from web"');
   });
 
+  it('should set a flag to show if the source is set to computer', () => {
+    simulateClick(reactTest.document, '.from-computer');
+    assert.ok(
+      !reactTest.ref.current.state.fromWeb,
+      'Source not set to "from computer"'
+    );
+  });
+
 });
