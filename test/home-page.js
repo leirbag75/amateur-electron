@@ -5,7 +5,6 @@ import HomePage from '../src/home-page';
 import assert from './assertions';
 import {
   describeComponent,
-  assertCalledOnceWith,
   thumbnailSelector,
   thumbnailSrc
 } from './test-helpers';
