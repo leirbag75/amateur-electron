@@ -2,6 +2,7 @@ import React from 'react';
 import Resource from './resource';
 import Thumbnail from './thumbnail';
 import { LinkListReader } from './readers';
+import LibraryEntryForm from './library-entry-form';
 
 let readers = [
   new LinkListReader('collection-image', 'setThumbnails')
@@ -25,17 +26,20 @@ export default class HomePage extends Resource {
   }
 
   render() {
-    return <div className="thumbnails">
-        {
-          this.state.thumbnails.map(thumbnail =>
-            <Thumbnail
-             key={thumbnail.href}
-             url={thumbnail.href}
-             backend={this.props.backend}
-             embed={thumbnail.embed}
-            />
-          )
-        }
+    return <div>
+        <LibraryEntryForm />
+        <div className="thumbnails">
+          {
+            this.state.thumbnails.map(thumbnail =>
+              <Thumbnail
+              key={thumbnail.href}
+              url={thumbnail.href}
+              backend={this.props.backend}
+              embed={thumbnail.embed}
+              />
+            )
+          }
+        </div>
       </div>
   }
 
