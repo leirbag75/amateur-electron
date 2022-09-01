@@ -26,4 +26,14 @@ export default class Backend {
 
   unlike = this.like;
 
+  addLibraryEntry(url, src) {
+    return this.http.fetch(url, {method: 'POST', body: JSON.stringify({src})})
+      .then(response => {
+        let link = response.links.find(link => link.rel === 'created-image');
+        if(link)
+          this.viewImage(link.href);
+        return response;
+      });
+  }
+
 }

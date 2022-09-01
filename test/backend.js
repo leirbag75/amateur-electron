@@ -75,4 +75,57 @@ withReactTest('backend', reactTest => {
 
   });
 
+  describe ('addLibraryEntry', () => {
+
+    it('should post the given src to the given URL', () => {
+      let url = 'https://api.com/images';
+      let src = 'https://images.com/1.jpeg';
+      backend.addLibraryEntry(url, src);
+      assert.ok(backend.http.fetch.calledOnce, 'http.fetch not called');
+      let args = backend.http.fetch.getCall(0).args;
+      assert.equal(args[0], url);
+      assert.equal(args[1].method, 'POST');
+      assert.equal(args[1].body, `{"src":"${src}"}`);
+    });
+
+    it('should call viewImage on the response', async () => {
+      let url = 'https://api.com/images';
+      let src = 'https://images.com/1.jpeg';
+      let createdUrl = 'https://api.com/images/1';
+      reactTest.render(App, {}, backend.ref);
+      let response = {
+        links: [
+          {
+            rel: 'created-image',
+            href: createdUrl
+          }
+        ]
+      };
+      // We have to return an actual promise for this test
+      let mock = {fetch: () => Promise.resolve(response)};
+      backend.http = mock;
+      await act(async () => {
+        await backend.addLibraryEntry(url, src);
+      });
+      let currentPage = backend.app.currentPage;
+      assert.equal(currentPage.type, ImageViewer);
+      assert.equal(currentPage.props.url, createdUrl);
+    });
+
+    it('should not call viewImage if response has no "created" link', async () => {
+      let url = 'https://api.com/images';
+      let src = 'https://images.com/1.jpeg';
+      let response = {
+        links: []
+      };
+      // We have to return an actual promise for this test, too
+      let mock = {fetch: () => Promise.resolve(response)};
+      backend.http = mock;
+      sinon.replace(backend, 'viewImage', sinon.fake());
+      await backend.addLibraryEntry(url, src);
+      assert.ok(!backend.viewImage.calledOnce);
+    });
+
+  });
+
 });
