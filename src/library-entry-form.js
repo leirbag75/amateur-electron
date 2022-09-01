@@ -35,6 +35,7 @@ export default class LibraryEntryForm extends React.Component {
                 <input type="file" id="file-input" />
               </>
           }
+          <input className="submit-library-entry" type="submit" />
         </form>
       </div>
   }

@@ -100,6 +100,14 @@ describeComponent(HomePage, reactTest => {
       assert.notRendered(reactTest.document, urlInputSelector);
     });
 
+    it('should render a submit button', () => {
+      let submitButton = reactTest
+        .document
+        .querySelector('input.submit-library-entry');
+      assert.ok(submitButton);
+      assert.equal(submitButton.type, 'submit');
+    });
+
   });
 
 });
