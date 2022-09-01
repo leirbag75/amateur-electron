@@ -14,18 +14,26 @@ export default class LibraryEntryForm extends React.Component {
   }
 
   render() {
-    return <div>
-        <button className="from-computer" onClick={() => {this.setSource(false);}}>
-          From computer
-        </button>
-        <button className="from-web" onClick={() => {this.setSource(true);}}>
-          From web
-        </button>
+    return <div className="library-entry-modal">
+        <div className="source-selection">
+          <button className="from-computer" onClick={() => {this.setSource(false);}}>
+            From computer
+          </button>
+          <button className="from-web" onClick={() => {this.setSource(true);}}>
+            From web
+          </button>
+        </div>
         <form>
           {
             this.state.fromWeb?
-              <input type="url" className="url-input" />:
-              <input type="file" className="file-input" />
+              <>
+                <label htmlFor="url-input">URL</label>
+                <input type="url" id="url-input" />
+              </>:
+              <>
+                <label htmlFor="file-input">file</label>
+                <input type="file" id="file-input" />
+              </>
           }
         </form>
       </div>

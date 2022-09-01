@@ -68,6 +68,9 @@ describeComponent(HomePage, reactTest => {
 
   describe('library entry form', () => {
 
+    let fileInputSelector = 'form input#file-input';
+    let urlInputSelector = 'form input#url-input';
+
     it('should give an option to select either a file or a URL input', () => {
       assert.rendered(reactTest.document, '.from-computer');
       assert.rendered(reactTest.document, '.from-web');
@@ -75,26 +78,26 @@ describeComponent(HomePage, reactTest => {
 
     it('should show a file input if the from-computer option is clicked', () => {
       simulateClick(reactTest.document, '.from-computer');
-      let input = reactTest.document.querySelector('form input.file-input');
+      let input = reactTest.document.querySelector(fileInputSelector);
       assert.ok(input, 'No file input rendered');
       assert.equal(input.type, 'file');
     });
 
     it('should show a URL input if the from-web option is clicked', () => {
       simulateClick(reactTest.document, '.from-web');
-      let input = reactTest.document.querySelector('form input.url-input');
+      let input = reactTest.document.querySelector(urlInputSelector);
       assert.ok(input, 'No URL input rendered');
       assert.equal(input.type, 'url');
     });
 
     it('should not render the file input when the source is "from web"', () => {
       simulateClick(reactTest.document, '.from-web');
-      assert.notRendered(reactTest.document, 'form input.file-input');
+      assert.notRendered(reactTest.document, fileInputSelector);
     });
 
     it('should not render URL input when the source is "from computer"', () => {
       simulateClick(reactTest.document, '.from-computer');
-      assert.notRendered(reactTest.document, 'form input.url-input');
+      assert.notRendered(reactTest.document, urlInputSelector);
     });
 
   });
