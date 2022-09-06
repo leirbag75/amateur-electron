@@ -26,14 +26,14 @@ export default class LibraryEntryForm extends React.Component {
         <form>
           {
             this.state.fromWeb?
-              <>
+              <div>
                 <label htmlFor="url-input">URL</label>
                 <input type="url" id="url-input" />
-              </>:
-              <>
+              </div>:
+              <div>
                 <label htmlFor="file-input">file</label>
                 <input type="file" id="file-input" />
-              </>
+              </div>
           }
           <input className="submit-library-entry" type="submit" />
         </form>
