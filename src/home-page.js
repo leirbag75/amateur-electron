@@ -13,7 +13,8 @@ export default class HomePage extends Resource {
   constructor(props) {
     super(props);
     this.state = {
-      thumbnails: []
+      thumbnails: [],
+      libraryEntryModalVisible: false
     }
   }
 
@@ -25,9 +26,14 @@ export default class HomePage extends Resource {
     return readers;
   }
 
+  showLibraryEntryModal = () => {
+    this.setState({libraryEntryModalVisible: true});
+  }
+
   render() {
     return <div>
-        <LibraryEntryForm />
+        <button className="library-entry-modal-button" onClick={this.showLibraryEntryModal} />
+        <LibraryEntryForm visible={this.state.libraryEntryModalVisible} />
         <div className="thumbnails">
           {
             this.state.thumbnails.map(thumbnail =>

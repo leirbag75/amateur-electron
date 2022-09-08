@@ -66,6 +66,27 @@ describeComponent(HomePage, reactTest => {
     assert.deepEqual(homePage.state.thumbnails, collectionImages);
   });
 
+  describe('show library entry modal button', () => {
+
+    it('should render', () => {
+      assert.rendered(reactTest.document, '.library-entry-modal-button');
+    });
+
+    it('should make the library entry modal visible iff clicked', () => {
+      let modal = reactTest.document.querySelector('.library-entry-modal');
+      assert.ok(
+        modal.classList.contains('hidden'),
+        '"Hidden" class not assigned to modal'
+      );
+      simulateClick(reactTest.document, '.library-entry-modal-button');
+      assert.ok(
+        !modal.classList.contains('hidden'),
+        '"Hidden" class still assigned after clicking button to show modal'
+      );
+    });
+
+  });
+
   describe('library entry form', () => {
 
     let fileInputSelector = 'form input#file-input';
