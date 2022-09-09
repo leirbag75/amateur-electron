@@ -15,6 +15,14 @@ function isImageUrl(url) {
   return !!url.match(/^images\/[0-9]+$/);
 }
 
+function makeAddEntryUrl() {
+  return 'images';
+}
+
+function isAddEntryUrl(url) {
+  return url === 'images';
+}
+
 function makeLikeUrl(index) {
   return `images/${index}/likes`;
 }
@@ -78,6 +86,8 @@ class FetchHandler {
       return new UnlikeHandler(url, options, db);
     if(isTagUrl(url))
       return new TagHandler(url, options, db);
+    if(isAddEntryUrl(url) && options.method === 'POST')
+      return new AddEntryHandler(url, options, db);
   }
 
   async getLibraryEntries() {
@@ -119,6 +129,13 @@ class FetchHandler {
     return tag;
   }
 
+  async addLibraryEntry(url) {
+    let statement = this.db.prepare("INSERT INTO library_entry(src) VALUES(?)");
+    await statement.run(url);
+    statement.finalize();
+    return (await this.db.get("SELECT last_insert_rowid() as id")).id;
+  }
+
 }
 
 class EntryHandler extends FetchHandler {
@@ -126,10 +143,31 @@ class EntryHandler extends FetchHandler {
   async handle() {
     let rows = await this.getLibraryEntries();
     return {
-      links: rows.map(row => ({
-        rel: 'collection-image',
-        href: makeImageUrl(row.id),
-      }))
+      links: [
+        ...rows.map(row => ({
+          rel: 'collection-image',
+          href: makeImageUrl(row.id),
+        })),
+        {
+          rel: 'add-library-entry',
+          href: makeAddEntryUrl()
+        }
+      ]
+    };
+  }
+
+}
+
+class AddEntryHandler extends FetchHandler {
+
+  async handle() {
+    let src = JSON.parse(this.options.body).src;
+    let newIndex = await this.addLibraryEntry(src);
+    return {
+      links: [{
+        rel: 'created-image',
+        href: makeImageUrl(newIndex)
+      }]
     };
   }
 
