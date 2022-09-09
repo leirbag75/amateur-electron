@@ -2,9 +2,9 @@ import { strict as assert } from 'assert';
 
 function calledOnceWith(object, field, ...args) {
   assert.ok(object[field].calledOnce, `"${field}" not called once`);
-  assert.ok(
-    object[field].calledWith(...args), `"${field}" called with wrong arguments`
-  );
+  let givenArgs = object[field].getCall(0).args;
+  for(let i = 0; i < args.length; ++i)
+    assert.equal(givenArgs[i], args[i]);
 }
 
 function rendered(
