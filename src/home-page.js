@@ -1,12 +1,13 @@
 import React from 'react';
 import Resource from './resource';
 import Thumbnail from './thumbnail';
-import { LinkListReader } from './readers';
+import { LinkListReader, LinkReader } from './readers';
 import LibraryEntryForm from './library-entry-form';
 import { OperationNotEnabled } from './errors';
 
 let readers = [
-  new LinkListReader('collection-image', 'setThumbnails')
+  new LinkListReader('collection-image', 'setThumbnails'),
+  new LinkReader('add-library-entry', 'enableAddingLibraryEntries')
 ];
 
 export default class HomePage extends Resource {

@@ -115,6 +115,17 @@ describeComponent(HomePage, reactTest => {
 
   });
 
+  it('should read add-library-entry link', () => {
+    let homePage = reactTest.ref.current;
+    act(() => {
+      homePage.readResource({links: [{
+        rel: 'add-library-entry',
+        href: 'https://api.com/collection'
+      }]});
+    });
+    assert.equal(homePage.state.relAddLibraryEntry, 'https://api.com/collection');
+  });
+
   describe('library entry form', () => {
 
     let fileInputSelector = 'form input#file-input';
