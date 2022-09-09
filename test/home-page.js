@@ -10,6 +10,7 @@ import {
   simulateClick
 } from './test-helpers';
 import addResourceTests from './resource-subclass';
+import { OperationNotEnabled } from '../src/errors';
 
 describeComponent(HomePage, reactTest => {
 
@@ -82,6 +83,33 @@ describeComponent(HomePage, reactTest => {
       assert.ok(
         !modal.classList.contains('hidden'),
         '"Hidden" class still assigned after clicking button to show modal'
+      );
+    });
+
+  });
+
+  describe('addLibraryEntry behavior', () => {
+
+    it('should throw an error if adding library entries is not enabled', () => {
+      assert.throws(
+        () => {
+          reactTest.ref.current.addLibraryEntry('src.com/1.jpeg');
+        },
+        OperationNotEnabled
+      );
+    });
+
+    it('should call addLibraryEntry on backend if enabled', () => {
+      sinon.replace(reactTest.backend, 'addLibraryEntry', sinon.fake());
+      act(() => {
+        reactTest.ref.current.enableAddingLibraryEntries('api.com');
+      });
+      reactTest.ref.current.addLibraryEntry('src.com/1.jpeg');
+      assert.calledOnceWith(
+        reactTest.backend,
+        'addLibraryEntry',
+        'api.com',
+        'src.com/1.jpeg'
       );
     });
 

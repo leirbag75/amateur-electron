@@ -3,6 +3,7 @@ import Resource from './resource';
 import Thumbnail from './thumbnail';
 import { LinkListReader } from './readers';
 import LibraryEntryForm from './library-entry-form';
+import { OperationNotEnabled } from './errors';
 
 let readers = [
   new LinkListReader('collection-image', 'setThumbnails')
@@ -14,7 +15,8 @@ export default class HomePage extends Resource {
     super(props);
     this.state = {
       thumbnails: [],
-      libraryEntryModalVisible: false
+      libraryEntryModalVisible: false,
+      relAddLibraryEntry: ''
     }
   }
 
@@ -28,6 +30,16 @@ export default class HomePage extends Resource {
 
   showLibraryEntryModal = () => {
     this.setState({libraryEntryModalVisible: true});
+  }
+
+  addLibraryEntry(src) {
+    if(!this.state.relAddLibraryEntry)
+      throw new OperationNotEnabled('Adding library entries not enabled');
+    this.props.backend.addLibraryEntry(this.state.relAddLibraryEntry, src);
+  }
+
+  enableAddingLibraryEntries(url) {
+    this.setState({relAddLibraryEntry: url});
   }
 
   render() {
