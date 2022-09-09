@@ -33,7 +33,7 @@ export default class HomePage extends Resource {
     this.setState({libraryEntryModalVisible: true});
   }
 
-  addLibraryEntry(src) {
+  addLibraryEntry = src => {
     if(!this.state.relAddLibraryEntry)
       throw new OperationNotEnabled('Adding library entries not enabled');
     this.props.backend.addLibraryEntry(this.state.relAddLibraryEntry, src);
@@ -46,7 +46,7 @@ export default class HomePage extends Resource {
   render() {
     return <div>
         <button className="library-entry-modal-button" onClick={this.showLibraryEntryModal} />
-        <LibraryEntryForm visible={this.state.libraryEntryModalVisible} />
+        <LibraryEntryForm visible={this.state.libraryEntryModalVisible} onSubmit={this.addLibraryEntry} />
         <div className="thumbnails">
           {
             this.state.thumbnails.map(thumbnail =>

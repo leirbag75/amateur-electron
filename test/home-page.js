@@ -168,6 +168,22 @@ describeComponent(HomePage, reactTest => {
       assert.equal(submitButton.type, 'submit');
     });
 
+    it('should call addLibraryEntry callback when URL submitted', () => {
+      sinon.replace(reactTest.ref.current, 'addLibraryEntry', sinon.fake());
+      act(() => {
+        reactTest.ref.current.enableAddingLibraryEntries('api.com/images');
+      });
+      simulateClick(reactTest.document, '.from-web');
+      reactTest.document.querySelector(urlInputSelector).value = 'https://images.com/image.jpeg';
+      simulateClick(reactTest.document, 'input.submit-library-entry');
+      assert.calledOnceWith(reactTest.ref.current, 'addLibraryEntry', 'https://images.com/image.jpeg');
+    });
+
+    // Unfortunately, as far as I can tell, testing this is impossible because
+    // file inputs are read only, so we can't put in a test value. If anyone
+    // knows how to get around this, I'm all ears.
+    it('should call addLibraryEntry callback when file submitted');
+
   });
 
 });
