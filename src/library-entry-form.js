@@ -34,29 +34,31 @@ export default class LibraryEntryForm extends React.Component {
   }
 
   render() {
-    return <div className={`library-entry-modal ${this.hiddenClass()}`}>
-        <div className="source-selection">
-          <button className="from-computer" onClick={() => {this.setSource(false);}}>
-            From computer
-          </button>
-          <button className="from-web" onClick={() => {this.setSource(true);}}>
-            From web
-          </button>
+    return <div className={`library-entry-modal-container ${this.hiddenClass()}`}>
+        <div className="library-entry-modal">
+          <div className="source-selection">
+            <button className="from-computer" onClick={() => {this.setSource(false);}}>
+              From computer
+            </button>
+            <button className="from-web" onClick={() => {this.setSource(true);}}>
+              From web
+            </button>
+          </div>
+          <form onSubmit={this.onSubmit}>
+            {
+              this.state.fromWeb?
+                <div>
+                  <label htmlFor="url-input">URL</label>
+                  <input type="url" id="url-input" name="urlInput" />
+                </div>:
+                <div>
+                  <label htmlFor="file-input">file</label>
+                  <input type="file" id="file-input" name="fileInput" />
+                </div>
+            }
+            <input className="submit-library-entry" type="submit" />
+          </form>
         </div>
-        <form onSubmit={this.onSubmit}>
-          {
-            this.state.fromWeb?
-              <div>
-                <label htmlFor="url-input">URL</label>
-                <input type="url" id="url-input" name="urlInput" />
-              </div>:
-              <div>
-                <label htmlFor="file-input">file</label>
-                <input type="file" id="file-input" name="fileInput" />
-              </div>
-          }
-          <input className="submit-library-entry" type="submit" />
-        </form>
       </div>
   }
 

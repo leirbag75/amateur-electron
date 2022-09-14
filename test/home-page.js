@@ -74,14 +74,16 @@ describeComponent(HomePage, reactTest => {
     });
 
     it('should make the library entry modal visible iff clicked', () => {
-      let modal = reactTest.document.querySelector('.library-entry-modal');
+      let modalContainer = reactTest
+        .document
+        .querySelector('.library-entry-modal-container');
       assert.ok(
-        modal.classList.contains('hidden'),
+        modalContainer.classList.contains('hidden'),
         '"Hidden" class not assigned to modal'
       );
       simulateClick(reactTest.document, '.library-entry-modal-button');
       assert.ok(
-        !modal.classList.contains('hidden'),
+        !modalContainer.classList.contains('hidden'),
         '"Hidden" class still assigned after clicking button to show modal'
       );
     });
