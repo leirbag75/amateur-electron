@@ -21,13 +21,13 @@ export default class App extends React.Component {
     this.setState({currentPage: component});
   }
 
-  goBack() {
+  goBack = () => {
     this.setState({currentPage: this.pagesVisited.pop()});
   }
 
   render() {
     return <>
-        {this.pagesVisited.length > 0 && <button className="back-button" />}
+        {this.pagesVisited.length > 0 && <button className="back-button" onClick={this.goBack} />}
         {this.currentPage}
       </>
   }

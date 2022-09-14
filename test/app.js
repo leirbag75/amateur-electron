@@ -1,9 +1,10 @@
 import { describe, it } from 'mocha';
 import { act } from 'react-dom/test-utils';
+import sinon from 'sinon';
 import App from '../src/app';
 import HomePage from '../src/home-page';
 import assert from './assertions';
-import { describeComponent  } from './test-helpers';
+import { describeComponent, simulateClick  } from './test-helpers';
 import React from 'react';
 
 class MockPage extends React.Component {
@@ -76,6 +77,15 @@ describeComponent(App, reactTest => {
         app.setPage(<MockPage />);
       });
       assert.rendered(reactTest.document, '.back-button');
+    });
+
+    it('should call "goBack" when clicked', () => {
+      sinon.replace(app, 'goBack', sinon.fake());
+      act(() => {
+        app.setPage(<MockPage />);
+      });
+      simulateClick(reactTest.document, '.back-button');
+      assert.ok(app.goBack.calledOnce, '"goBack" not called');
     });
 
   });
