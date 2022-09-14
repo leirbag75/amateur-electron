@@ -68,4 +68,16 @@ describeComponent(App, reactTest => {
 
   });
 
+  describe('back button', () => {
+
+    it('should render if previously visited page exists', () => {
+      assert.notRendered(reactTest.document, '.back-button');
+      act(() => {
+        app.setPage(<MockPage />);
+      });
+      assert.rendered(reactTest.document, '.back-button');
+    });
+
+  });
+
 })

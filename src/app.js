@@ -26,7 +26,10 @@ export default class App extends React.Component {
   }
 
   render() {
-    return this.currentPage;
+    return <>
+        {this.pagesVisited.length > 0 && <button className="back-button" />}
+        {this.currentPage}
+      </>
   }
 
 }
