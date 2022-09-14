@@ -45,7 +45,9 @@ export default class HomePage extends Resource {
 
   render() {
     return <div>
-        <button className="library-entry-modal-button" onClick={this.showLibraryEntryModal} />
+        <button className="library-entry-modal-button" onClick={this.showLibraryEntryModal}>
+          Add picture
+        </button>
         <LibraryEntryForm visible={this.state.libraryEntryModalVisible} onSubmit={this.addLibraryEntry} />
         <div className="thumbnails">
           {
