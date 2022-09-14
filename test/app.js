@@ -16,13 +16,13 @@ class MockPage extends React.Component {
 
 describeComponent(App, reactTest => {
 
+  let app;
+
+  beforeEach(() => {
+    app = reactTest.ref.current;
+  });
+
   describe('page switching behavior', () => {
-
-    let app;
-
-    beforeEach(() => {
-      app = reactTest.ref.current;
-    });
 
     it('should start on home page', () => {
       assert.equal(app.currentPage.type, HomePage)
