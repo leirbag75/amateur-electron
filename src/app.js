@@ -10,12 +10,19 @@ export default class App extends React.Component {
     };
   }
 
+  pagesVisited = new Array();
+
   get currentPage() {
     return this.state.currentPage;
   }
 
   setPage(component) {
+    this.pagesVisited.push(this.currentPage);
     this.setState({currentPage: component});
+  }
+
+  goBack() {
+    this.setState({currentPage: this.pagesVisited.pop()});
   }
 
   render() {

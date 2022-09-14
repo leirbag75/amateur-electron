@@ -47,4 +47,25 @@ describeComponent(App, reactTest => {
 
   });
 
+  describe('page history', () => {
+
+    it('should track the number of pages previously visited', () => {
+      assert.equal(app.pagesVisited.length, 0);
+      act(() => {
+        app.setPage(<MockPage />);
+      })
+      assert.equal(app.pagesVisited.length, 1);
+    });
+
+    it('should set the page back to its original value when popped', () => {
+      let originalPage = app.currentPage;
+      act(() => {
+        app.setPage(<MockPage />);
+        app.goBack();
+      });
+      assert.equal(originalPage, app.currentPage);
+    });
+
+  });
+
 })
