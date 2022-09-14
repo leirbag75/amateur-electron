@@ -33,6 +33,10 @@ export default class HomePage extends Resource {
     this.setState({libraryEntryModalVisible: true});
   }
 
+  hideLibraryEntryModal = () => {
+    this.setState({libraryEntryModalVisible: false});
+  }
+
   addLibraryEntry = src => {
     if(!this.state.relAddLibraryEntry)
       throw new OperationNotEnabled('Adding library entries not enabled');
@@ -48,7 +52,7 @@ export default class HomePage extends Resource {
         <button className="library-entry-modal-button" onClick={this.showLibraryEntryModal}>
           Add picture
         </button>
-        <LibraryEntryForm visible={this.state.libraryEntryModalVisible} onSubmit={this.addLibraryEntry} />
+        <LibraryEntryForm visible={this.state.libraryEntryModalVisible} onSubmit={this.addLibraryEntry} onClose={this.hideLibraryEntryModal} />
         <div className="thumbnails">
           {
             this.state.thumbnails.map(thumbnail =>

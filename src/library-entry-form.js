@@ -33,9 +33,13 @@ export default class LibraryEntryForm extends React.Component {
       this.props.onSubmit(fileSource(event));
   }
 
+  stopPropagation(event) {
+    event.stopPropagation();
+  }
+
   render() {
-    return <div className={`library-entry-modal-container ${this.hiddenClass()}`}>
-        <div className="library-entry-modal">
+    return <div className={`library-entry-modal-container ${this.hiddenClass()}`} onClick={this.props.onClose}>
+        <div className="library-entry-modal" onClick={this.stopPropagation}>
           <div className="source-selection">
             <button className="from-computer" onClick={() => {this.setSource(false);}}>
               From computer

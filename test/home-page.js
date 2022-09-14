@@ -88,6 +88,18 @@ describeComponent(HomePage, reactTest => {
       );
     });
 
+    it('should make the library entry modal invisible when its background is clicked', () => {
+      simulateClick(reactTest.document, '.library-entry-modal-button');
+      simulateClick(reactTest.document, '.library-entry-modal-container');
+      let modalContainer = reactTest
+        .document
+        .querySelector('.library-entry-modal-container');
+      assert.ok(
+        modalContainer.classList.contains('hidden'),
+        'Library entry modal not closed after clicking background'
+      );
+    });
+
   });
 
   describe('addLibraryEntry behavior', () => {
