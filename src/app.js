@@ -25,9 +25,15 @@ export default class App extends React.Component {
     this.setState({currentPage: this.pagesVisited.pop()});
   }
 
+  backButton() {
+    return <button className="back-button material-icons" onClick={this.goBack}>
+        arrow_back
+      </button>
+  }
+
   render() {
     return <>
-        {this.pagesVisited.length > 0 && <button className="back-button" onClick={this.goBack} />}
+        {this.pagesVisited.length > 0 && this.backButton()}
         {this.currentPage}
       </>
   }
