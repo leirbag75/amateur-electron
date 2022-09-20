@@ -128,4 +128,24 @@ withReactTest('backend', reactTest => {
 
   });
 
+  describe('search', () => {
+
+    it('should post the given query to the given URL', () => {
+      let url = 'https://api.com/search';
+      let query = '{"operation": "and", "values": [{"operation": "has_tag", "values": "tag1"}, {"operation": "likes_equal_to", "values": [1]}]}';
+      backend.search(url, query);
+      assert.ok(backend.http.fetch.calledOnce, '"fetch" not called');
+      let args = backend.http.fetch.getCall(0).args;
+      assert.equal(args[0], url);
+      assert.equal(args[1].method, 'POST');
+      assert.equal(args[1].body, query);
+    });
+
+    it('should return whatever fetch returns', () => {
+      backend.http.fetch = sinon.fake.returns(1);
+      assert.equal(backend.search('a', 'b'), 1);
+    });
+
+  });
+
 });

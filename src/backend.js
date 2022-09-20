@@ -36,4 +36,8 @@ export default class Backend {
       });
   }
 
+  search(url, query) {
+    return this.http.fetch(url, {method: 'POST', body: query});
+  }
+
 }
