@@ -1,4 +1,92 @@
 
+function parseQuery(query) {
+  let { condition, args } = parseJSONQuery(JSON.parse(query));
+  return {
+    query: 'SELECT id, src, likes FROM library_entry WHERE ' + condition,
+    args
+  };
+}
+
+// If we decide to make it easy to add new search operations, this will need to
+// be refactored, but for now, this set seems pretty stable
+function parseJSONQuery(query) {
+  switch(query.operation) {
+    case 'and': {
+      let parseResults = query.values.map(parseJSONQuery);
+      return {
+        condition: `(${parseResults.map(result => result.condition).join(' AND ')})`,
+        args: parseResults.flatMap(result => result.args)
+      };
+    }
+    case 'or': {
+      let parseResults = query.values.map(parseJSONQuery);
+      return {
+        condition: `(${parseResults.map(result => result.condition).join(' OR ')})`,
+        args: parseResults.flatMap(result => result.args)
+      };
+    }
+    case 'not': {
+      if(query.values.length !== 1)
+        throw new Error('Invalid "not" operation');
+      let parseResult = parseJSONQuery(query.values[0]);
+      return {
+        condition: `(NOT ${parseResult.condition})`,
+        args: parseResult.args
+      };
+    }
+    case 'has_tag': {
+      if(query.values.length !== 1)
+        throw new Error('Invalid "has_tag" query');
+      return {
+        condition: '(EXISTS (SELECT tag_id FROM tag_entry JOIN tag ON tag_entry.tag_id = tag.id WHERE tag.name = ? AND tag_entry.library_entry_id = library_entry.id))',
+        args: [query.values[0]]
+      };
+    }
+    case 'likes_equal_to': {
+      if(query.values.length !== 1)
+        throw new Error('Invalid "likes_equal_to" query');
+      return {
+        condition: '(likes = ?)',
+        args: [query.values[0]]
+      };
+    }
+    case 'likes_less_than': {
+      if(query.values.length !== 1)
+        throw new Error('Invalid "likes_less_than" query');
+      return {
+        condition: '(likes < ?)',
+        args: [query.values[0]]
+      };
+    }
+    case 'likes_greater_than': {
+      if(query.values.length !== 1)
+        throw new Error('Invalid "likes_greater_than" query');
+      return {
+        condition: '(likes > ?)',
+        args: [query.values[0]]
+      };
+    }
+    case 'likes_less_than_or_equal_to': {
+      if(query.values.length !== 1)
+        throw new Error('Invalid "likes_less_than_or_equal_to" query');
+      return {
+        condition: '(likes <= ?)',
+        args: [query.values[0]]
+      };
+    }
+    case 'likes_greater_than_or_equal_to': {
+      if(query.values.length !== 1)
+        throw new Error('Invalid "likes_greater_than_or_equal_to" query');
+      return {
+        condition: '(likes >= ?)',
+        args: [query.values[0]]
+      };
+    }
+    default:
+      throw new Error('Invalid query operation');
+  }
+}
+
 function makeImageUrl(index) {
   return `images/${index}`;
 }
@@ -67,6 +155,14 @@ function isTagUrl(url) {
   return !!url.match(/^tags\/[0-9]+$/);
 }
 
+function makeSearchUrl() {
+  return 'search';
+}
+
+function isSearchUrl(url) {
+  return url === 'search';
+}
+
 class FetchHandler {
 
   constructor(url, options, db) {
@@ -88,6 +184,8 @@ class FetchHandler {
       return new TagHandler(url, options, db);
     if(isAddEntryUrl(url) && options.method === 'POST')
       return new AddEntryHandler(url, options, db);
+    if(isSearchUrl(url) && options.method === 'POST')
+      return new SearchHandler(url, options, db);
   }
 
   async getLibraryEntries() {
@@ -223,6 +321,23 @@ class TagHandler extends FetchHandler {
   async handle() {
     let index = tagUrlIndex(this.url);
     return this.getTag(index);
+  }
+
+}
+
+class SearchHandler extends FetchHandler {
+
+  async handle() {
+    let { query, args } = parseQuery(this.options.body);
+    let statement = this.db.prepare(query);
+    let result = await statement.all(...args);
+    statement.finalize();
+    return {
+      links: result.map(row => ({
+        rel: 'collection-image',
+        href: makeImageUrl(row.id)
+      }))
+    };
   }
 
 }
