@@ -220,6 +220,30 @@ describeComponent(HomePage, reactTest => {
       assert.equal(input.type, 'submit', 'Input type is not "submit"');
     });
 
+    it('should throw an error if not enabled', () => {
+      assert.throws(
+        () => {
+          reactTest.ref.current.search('"tag"');
+        },
+        OperationNotEnabled,
+        'Search not enabled, but no error thrown'
+      );
+    });
+
+    it('should call "search" on the backend if search is enabled', () => {
+      sinon.replace(reactTest.backend, 'search', sinon.fake());
+      act(() => {
+        reactTest.ref.current.enableSearch('https://api.com/search');
+      });
+      reactTest.ref.current.search('{"and": ["tag1", "tag2"]}');
+      assert.calledOnceWith(
+        reactTest.backend,
+        'search',
+        'https://api.com/search',
+        '{"operation":"and","values":[{"operation":"has_tag","values":["tag1"]},{"operation":"has_tag","values":["tag2"]}]}'
+      );
+    });
+
   });
 
 });

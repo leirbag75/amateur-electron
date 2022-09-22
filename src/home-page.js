@@ -5,6 +5,56 @@ import { LinkListReader, LinkReader } from './readers';
 import LibraryEntryForm from './library-entry-form';
 import { OperationNotEnabled } from './errors';
 
+function standardize(query) {
+  if(typeof query === 'string')
+    return {
+      operation: 'has_tag',
+      values: [query]
+    };
+  else if(typeof query === 'number')
+    return {
+      operation: 'likes_equal_to',
+      values: [query]
+    };
+  else if(query.and)
+    return {
+      operation: 'and',
+      values: query.and.map(standardize)
+    };
+  else if(query.or)
+    return {
+      operation: 'or',
+      values: query.or.map(standardize)
+    };
+  else if(query.not)
+    return {
+      operation: 'not',
+      values: [standardize(query.not)]
+    };
+  else if(query.likes_less_than)
+    return {
+      operation: 'likes_less_than',
+      values: [query.likes_less_than]
+    };
+  else if(query.likes_less_than_or_equal_to)
+    return {
+      operation: 'likes_less_than_or_equal_to',
+      values: [query.likes_less_than_or_equal_to]
+    };
+  else if(query.likes_greater_than)
+    return {
+      operation: 'likes_greater_than',
+      values: [query.likes_greater_than]
+    };
+  else if(query.likes_greater_than_or_equal_to)
+    return {
+      operation: 'likes_greater_than_or_equal_to',
+      values: [query.likes_greater_than_or_equal_to]
+    };
+  else
+    throw new Error('Invalid query');
+}
+
 let readers = [
   new LinkListReader('collection-image', 'setThumbnails'),
   new LinkReader('add-library-entry', 'enableAddingLibraryEntries')
@@ -17,7 +67,8 @@ export default class HomePage extends Resource {
     this.state = {
       thumbnails: [],
       libraryEntryModalVisible: false,
-      relAddLibraryEntry: ''
+      relAddLibraryEntry: '',
+      relSearch: ''
     }
   }
 
@@ -45,6 +96,19 @@ export default class HomePage extends Resource {
 
   enableAddingLibraryEntries(url) {
     this.setState({relAddLibraryEntry: url});
+  }
+
+  enableSearch(url) {
+    this.setState({relSearch: url});
+  }
+
+  search(query) {
+    if(!this.state.relSearch)
+      throw new OperationNotEnabled('Search not enabled');
+    this
+      .props
+      .backend
+      .search(this.state.relSearch, JSON.stringify(standardize(JSON.parse(query))));
   }
 
   render() {
