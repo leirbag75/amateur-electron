@@ -200,4 +200,26 @@ describeComponent(HomePage, reactTest => {
 
   });
 
+  describe('search', () => {
+
+    it('should render', () => {
+      assert.rendered(reactTest.document, 'form.search');
+    });
+
+    it('should contain a text input', () => {
+      let search = reactTest.document.querySelector('form.search');
+      let input = search.querySelector('input.query-input');
+      assert.ok(input, 'Input not rendered');
+      assert.equal(input.type, 'text', 'Input type is not "text"');
+    });
+
+    it('should contain a submit button', () => {
+      let search = reactTest.document.querySelector('form.search');
+      let input = search.querySelector('input.submit-search');
+      assert.ok(input, 'Submit button not rendered');
+      assert.equal(input.type, 'submit', 'Input type is not "submit"');
+    });
+
+  });
+
 });
