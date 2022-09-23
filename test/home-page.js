@@ -231,7 +231,11 @@ describeComponent(HomePage, reactTest => {
     });
 
     it('should call "search" on the backend if search is enabled', () => {
-      sinon.replace(reactTest.backend, 'search', sinon.fake());
+      sinon.replace(
+        reactTest.backend,
+        'search',
+        sinon.fake.returns(Promise.resolve({links: []}))
+      );
       act(() => {
         reactTest.ref.current.enableSearch('https://api.com/search');
       });
@@ -242,6 +246,56 @@ describeComponent(HomePage, reactTest => {
         'https://api.com/search',
         '{"operation":"and","values":[{"operation":"has_tag","values":["tag1"]},{"operation":"has_tag","values":["tag2"]}]}'
       );
+    });
+
+    it(
+      'should call setThumbnails with whatever the backend returns',
+      async () => {
+        let links = [
+          {
+            rel: 'collection-image',
+            href: 'https://image.com/1.jpeg'
+          },
+          {
+            rel: 'collection-image',
+            href: 'https://image.com/2.jpeg'
+          }
+        ];
+        reactTest.backend.search = () => Promise.resolve({links});
+        let homePage = reactTest.ref.current;
+        act(() => {
+          homePage.enableSearch('https://api.com/search');
+        });
+        await act(async () => {
+          await homePage.search('"tag1"');
+        });
+        assert.deepEqual(homePage.state.thumbnails, links);
+      }
+    );
+
+    it('should call "search" callback on being submitted', () => {
+      sinon.replace(reactTest.ref.current, 'search', sinon.fake());
+      act(() => {
+        reactTest.ref.current.enableSearch('https://api.com/search');
+      });
+      let input = reactTest
+        .document
+        .querySelector('form.search input.query-input');
+      input.value = '"something"';
+      simulateClick(reactTest.document, 'form.search input.submit-search');
+      assert.calledOnceWith(reactTest.ref.current, 'search', '"something"');
+    });
+
+    it('should read search link', () => {
+      act(() => {
+        reactTest.ref.current.readResource({
+          links: [{
+            rel: 'search',
+            href: 'https://api.com/search'
+          }]
+        });
+      });
+      assert.equal(reactTest.ref.current.state.relSearch, 'https://api.com/search');
     });
 
   });
