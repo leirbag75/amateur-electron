@@ -249,6 +249,10 @@ class EntryHandler extends FetchHandler {
         {
           rel: 'add-library-entry',
           href: makeAddEntryUrl()
+        },
+        {
+          rel: 'search',
+          href: 'search'
         }
       ]
     };
@@ -333,10 +337,20 @@ class SearchHandler extends FetchHandler {
     let result = await statement.all(...args);
     statement.finalize();
     return {
-      links: result.map(row => ({
-        rel: 'collection-image',
-        href: makeImageUrl(row.id)
-      }))
+      links: [
+        ...result.map(row => ({
+          rel: 'collection-image',
+          href: makeImageUrl(row.id)
+        })),
+        {
+          rel: 'add-library-entry',
+          href: makeAddEntryUrl()
+        },
+        {
+          rel: 'search',
+          href: 'search'
+        }
+      ]
     };
   }
 
