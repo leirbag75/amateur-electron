@@ -189,7 +189,7 @@ class FetchHandler {
   }
 
   async getLibraryEntries() {
-    return this.db.all("SELECT id FROM library_entry");
+    return this.db.all("SELECT id FROM library_entry WHERE NOT EXISTS (SELECT hidden FROM tag JOIN tag_entry ON tag_entry.tag_id = tag.id WHERE library_entry.id = tag_entry.library_entry_id AND tag.hidden = TRUE)");
   }
 
   async getLibraryEntry(index) {
