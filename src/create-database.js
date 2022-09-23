@@ -16,8 +16,9 @@ db.serialize(() => {
   )`);
 
   db.run(`CREATE TABLE tag_entry(
-    library_entry_id UNSIGNED INT NOT NULL REFERENCES library_entry(id),
-    tag_id UNSIGNED INT NOT NULL REFERENCES tag(id)
+    library_entry_id INTEGER NOT NULL REFERENCES library_entry(id),
+    tag_id INTEGER NOT NULL REFERENCES tag(id),
+    PRIMARY KEY(library_entry_id, tag_id)
   )`);
 
 });
