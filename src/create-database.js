@@ -12,7 +12,8 @@ db.serialize(() => {
 
   db.run(`CREATE TABLE tag(
     id INTEGER PRIMARY KEY,
-    name VARCHAR(32) NOT NULL
+    name VARCHAR(32) NOT NULL,
+    hidden INTEGER NOT NULL DEFAULT FALSE
   )`);
 
   db.run(`CREATE TABLE tag_entry(
