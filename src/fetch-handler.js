@@ -172,15 +172,15 @@ class FetchHandler {
   }
 
   static forUrl(url, options, db) {
-    if(url === 'entry')
+    if(url === 'entry' && options.method === 'GET')
       return new EntryHandler(url, options, db);
-    if(isImageUrl(url))
+    if(isImageUrl(url) && options.method === 'GET')
       return new ImageHandler(url, options, db);
     if(isLikeUrl(url) && options.method === 'POST')
       return new LikeHandler(url, options, db);
     if(isUnlikeUrl(url) && options.method === 'POST')
       return new UnlikeHandler(url, options, db);
-    if(isTagUrl(url))
+    if(isTagUrl(url) && options.method === 'GET')
       return new TagHandler(url, options, db);
     if(isAddEntryUrl(url) && options.method === 'POST')
       return new AddEntryHandler(url, options, db);

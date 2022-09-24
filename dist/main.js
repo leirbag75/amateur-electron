@@ -20,7 +20,9 @@ function createWindow() {
     }
   });
 
-  ipcMain.handle('fetch', (dontCare, url, options) => {
+  ipcMain.handle('fetch', (dontCare, url, options = {}) => {
+    if(options.method === undefined)
+      options.method = 'GET';
     return FetchHandler.forUrl(url, options, db).handle();
   });
 
