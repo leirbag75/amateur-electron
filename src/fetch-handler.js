@@ -236,6 +236,26 @@ class TagEntryUrlReader extends UrlReader {
 
 }
 
+class AddTagEntryUrlReader extends UrlReader {
+
+  get regex() {
+    return /^tag_entries\?image_index=(?<index>[0-9]+)$/;
+  }
+
+  get method() {
+    return 'POST';
+  }
+
+  get index() {
+    return this.match.groups.index;
+  }
+
+  get handlerClass() {
+    return AddTagEntryHandler;
+  }
+
+}
+
 class SearchUrlReader extends UrlReader {
 
   get regex() {
@@ -288,6 +308,7 @@ let urlReaderClasses = [
   UnlikeUrlReader,
   TagUrlReader,
   TagEntryUrlReader,
+  AddTagEntryUrlReader,
   SearchUrlReader
 ];
 
@@ -351,6 +372,22 @@ class FetchHandler {
     await statement.run(url);
     statement.finalize();
     return (await this.db.get("SELECT last_insert_rowid() as id")).id;
+  }
+
+  async ensureTag(tagName) {
+    let statement = this.db.prepare("INSERT OR IGNORE INTO tag(name) VALUES(?)");
+    await statement.run(tagName);
+    statement.finalize();
+    statement = this.db.prepare("SELECT id FROM tag WHERE name = ?");
+    let index = (await statement.get(tagName)).id;
+    statement.finalize();
+    return index;
+  }
+
+  async addTag(imageIndex, tagIndex) {
+    let statement = this.db.prepare("INSERT OR IGNORE INTO tag_entry(library_entry_id, tag_id) VALUES(?, ?)");
+    await statement.run(imageIndex, tagIndex);
+    statement.finalize();
   }
 
 }
@@ -453,6 +490,17 @@ class TagEntryHandler extends FetchHandler {
   async handle() {
     let tagIndex = parseInt(this.reader.tagIndex);
     return this.getTag(tagIndex);
+  }
+
+}
+
+class AddTagEntryHandler extends FetchHandler {
+
+  async handle() {
+    let imageIndex = parseInt(this.reader.index);
+    let tagName = JSON.parse(this.options.body).name;
+    let tagIndex = await this.ensureTag(tagName);
+    await this.addTag(imageIndex, tagIndex);
   }
 
 }
