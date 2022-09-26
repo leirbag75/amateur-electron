@@ -87,105 +87,195 @@ function parseJSONQuery(query) {
   }
 }
 
+class UrlReader {
+
+  constructor(url, method) {
+    this.match = url.match(this.regex);
+    this.givenMethod = method;
+  }
+
+  successful() {
+    return !!this.match && this.givenMethod === this.method;
+  }
+
+}
+
+class EntryUrlReader extends UrlReader {
+
+  get regex() {
+    return /^entry$/;
+  }
+
+  get method() {
+    return 'GET';
+  }
+
+  get handlerClass() {
+    return EntryHandler;
+  }
+
+}
+
+class ImageUrlReader extends UrlReader {
+
+  get regex() {
+    return /^images\/(?<index>[0-9]+)$/;
+  }
+
+  get method() {
+    return 'GET';
+  }
+
+  get index() {
+    return this.match.groups.index;
+  }
+
+  get handlerClass() {
+    return ImageHandler;
+  }
+
+}
+
+class AddEntryUrlReader extends UrlReader {
+
+  get regex() {
+    return /^images$/
+  }
+
+  get method() {
+    return 'POST';
+  }
+
+  get handlerClass() {
+    return AddEntryHandler;
+  }
+
+}
+
+class LikeUrlReader extends UrlReader {
+
+  get regex() {
+    return /^images\/(?<index>[0-9]+)\/likes$/;
+  }
+
+  get method() {
+    return 'POST';
+  }
+
+  get index() {
+    return this.match.groups.index;
+  }
+
+  get handlerClass() {
+    return LikeHandler;
+  }
+
+}
+
+class UnlikeUrlReader extends UrlReader {
+
+  get regex() {
+    return /^images\/(?<index>[0-9]+)\/unlikes$/;
+  }
+
+  get method() {
+    return 'POST';
+  }
+
+  get index() {
+    return this.match.groups.index;
+  }
+
+  get handlerClass() {
+    return UnlikeHandler;
+  }
+
+}
+
+class TagUrlReader extends UrlReader {
+
+  get regex() {
+    return /^tags\/(?<index>[0-9]+)$/;
+  }
+
+  get method() {
+    return 'GET';
+  }
+
+  get index() {
+    return this.match.groups.index;
+  }
+
+  get handlerClass() {
+    return TagHandler;
+  }
+
+}
+
+class SearchUrlReader extends UrlReader {
+
+  get regex() {
+    return /^search$/;
+  }
+
+  get method() {
+    return 'POST';
+  }
+
+  get handlerClass() {
+    return SearchHandler;
+  }
+
+}
+
 function makeImageUrl(index) {
   return `images/${index}`;
-}
-
-function imageUrlIndex(url) {
-  let match = url.match(/images\/([0-9]+)/);
-  if(match)
-    return parseInt(match[1]);
-  else
-    throw new Error("Not a valid image URL");
-}
-
-function isImageUrl(url) {
-  return !!url.match(/^images\/[0-9]+$/);
 }
 
 function makeAddEntryUrl() {
   return 'images';
 }
 
-function isAddEntryUrl(url) {
-  return url === 'images';
-}
-
 function makeLikeUrl(index) {
   return `images/${index}/likes`;
-}
-
-function likeUrlIndex(url) {
-  // Since imageUrlIndex makes no assumptions about where the URL begins or
-  // ends, imageUrlIndex works out to be the same as likeUrlIndex
-  return imageUrlIndex(url);
-}
-
-function isLikeUrl(url) {
-  return !!url.match(/^images\/[0-9]+\/likes$/);
 }
 
 function makeUnlikeUrl(index) {
   return `images/${index}/unlikes`;
 }
 
-function unlikeUrlIndex(url) {
-  // Since imageUrlIndex makes no assumptions about where the URL begins or
-  // ends, imageUrlIndex works out to be the same as likeUrlIndex
-  return imageUrlIndex(url);
-}
-
-function isUnlikeUrl(url) {
-  return !!url.match(/^images\/[0-9]+\/unlikes$/);
-}
-
 function makeTagUrl(index) {
   return `tags/${index}`;
-}
-
-function tagUrlIndex(url) {
-  let match = url.match(/tags\/([0-9]+)/);
-  if(match)
-    return parseInt(match[1]);
-  else
-    throw new Error("Not a valid tag URL");
-}
-
-function isTagUrl(url) {
-  return !!url.match(/^tags\/[0-9]+$/);
 }
 
 function makeSearchUrl() {
   return 'search';
 }
 
-function isSearchUrl(url) {
-  return url === 'search';
-}
+let urlReaderClasses = [
+  EntryUrlReader,
+  ImageUrlReader,
+  AddEntryUrlReader,
+  LikeUrlReader,
+  UnlikeUrlReader,
+  TagUrlReader,
+  SearchUrlReader
+];
 
 class FetchHandler {
 
-  constructor(url, options, db) {
-    this.url = url;
+  constructor(reader, options, db) {
     this.options = options;
     this.db = db;
+    this.reader = reader;
   }
 
   static forUrl(url, options, db) {
-    if(url === 'entry' && options.method === 'GET')
-      return new EntryHandler(url, options, db);
-    if(isImageUrl(url) && options.method === 'GET')
-      return new ImageHandler(url, options, db);
-    if(isLikeUrl(url) && options.method === 'POST')
-      return new LikeHandler(url, options, db);
-    if(isUnlikeUrl(url) && options.method === 'POST')
-      return new UnlikeHandler(url, options, db);
-    if(isTagUrl(url) && options.method === 'GET')
-      return new TagHandler(url, options, db);
-    if(isAddEntryUrl(url) && options.method === 'POST')
-      return new AddEntryHandler(url, options, db);
-    if(isSearchUrl(url) && options.method === 'POST')
-      return new SearchHandler(url, options, db);
+    for(let readerClass of urlReaderClasses) {
+      let reader = new readerClass(url, options.method);
+      if(reader.successful())
+        return new reader.handlerClass(reader, options, db);
+    }
   }
 
   async getLibraryEntries() {
@@ -278,7 +368,7 @@ class AddEntryHandler extends FetchHandler {
 class ImageHandler extends FetchHandler {
 
   async handle() {
-    let index = imageUrlIndex(this.url);
+    let index = this.reader.index;
     let row = await this.getLibraryEntry(index);
     let tags = await this.getTags(index);
     let links = tags.map(tag => ({
@@ -305,7 +395,7 @@ class ImageHandler extends FetchHandler {
 class LikeHandler extends FetchHandler {
 
   async handle() {
-    let index = likeUrlIndex(this.url);
+    let index = this.reader.index;
     return this.like(index);
   }
 
@@ -314,7 +404,7 @@ class LikeHandler extends FetchHandler {
 class UnlikeHandler extends FetchHandler {
 
   async handle() {
-    let index = unlikeUrlIndex(this.url);
+    let index = this.reader.index;
     return this.unlike(index);
   }
 
@@ -323,7 +413,7 @@ class UnlikeHandler extends FetchHandler {
 class TagHandler extends FetchHandler {
 
   async handle() {
-    let index = tagUrlIndex(this.url);
+    let index = this.reader.index;
     return this.getTag(index);
   }
 
