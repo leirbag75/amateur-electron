@@ -212,6 +212,30 @@ class TagUrlReader extends UrlReader {
 
 }
 
+class TagEntryUrlReader extends UrlReader {
+
+  get regex() {
+    return /^tag_entries\/(?<imageIndex>[0-9]+)_(?<tagIndex>[0-9]+)$/;
+  }
+
+  get method() {
+    return 'GET';
+  }
+
+  get imageIndex() {
+    return this.match.groups.imageIndex;
+  }
+
+  get tagIndex() {
+    return this.match.groups.tagIndex;
+  }
+
+  get handlerClass() {
+    return TagEntryHandler
+  }
+
+}
+
 class SearchUrlReader extends UrlReader {
 
   get regex() {
@@ -248,6 +272,10 @@ function makeTagUrl(index) {
   return `tags/${index}`;
 }
 
+function makeTagEntryUrl(imageIndex, tagIndex) {
+  return `tag_entries/${imageIndex}_${tagIndex}`;
+}
+
 function makeSearchUrl() {
   return 'search';
 }
@@ -259,6 +287,7 @@ let urlReaderClasses = [
   LikeUrlReader,
   UnlikeUrlReader,
   TagUrlReader,
+  TagEntryUrlReader,
   SearchUrlReader
 ];
 
@@ -372,8 +401,8 @@ class ImageHandler extends FetchHandler {
     let row = await this.getLibraryEntry(index);
     let tags = await this.getTags(index);
     let links = tags.map(tag => ({
-      rel: 'tag',
-      href: makeTagUrl(tag.id)
+      rel: 'tag-entry',
+      href: makeTagEntryUrl(index, tag.id)
     }));
     links.push({
       rel: 'like',
@@ -415,6 +444,15 @@ class TagHandler extends FetchHandler {
   async handle() {
     let index = this.reader.index;
     return this.getTag(index);
+  }
+
+}
+
+class TagEntryHandler extends FetchHandler {
+
+  async handle() {
+    let tagIndex = this.reader.tagIndex;
+    return this.getTag(tagIndex);
   }
 
 }
