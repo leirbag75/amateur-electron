@@ -397,7 +397,7 @@ class AddEntryHandler extends FetchHandler {
 class ImageHandler extends FetchHandler {
 
   async handle() {
-    let index = this.reader.index;
+    let index = parseInt(this.reader.index);
     let row = await this.getLibraryEntry(index);
     let tags = await this.getTags(index);
     let links = tags.map(tag => ({
@@ -424,7 +424,7 @@ class ImageHandler extends FetchHandler {
 class LikeHandler extends FetchHandler {
 
   async handle() {
-    let index = this.reader.index;
+    let index = parseInt(this.reader.index);
     return this.like(index);
   }
 
@@ -433,7 +433,7 @@ class LikeHandler extends FetchHandler {
 class UnlikeHandler extends FetchHandler {
 
   async handle() {
-    let index = this.reader.index;
+    let index = parseInt(this.reader.index);
     return this.unlike(index);
   }
 
@@ -442,7 +442,7 @@ class UnlikeHandler extends FetchHandler {
 class TagHandler extends FetchHandler {
 
   async handle() {
-    let index = this.reader.index;
+    let index = parseInt(this.reader.index);
     return this.getTag(index);
   }
 
@@ -451,7 +451,7 @@ class TagHandler extends FetchHandler {
 class TagEntryHandler extends FetchHandler {
 
   async handle() {
-    let tagIndex = this.reader.tagIndex;
+    let tagIndex = parseInt(this.reader.tagIndex);
     return this.getTag(tagIndex);
   }
 
