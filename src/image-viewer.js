@@ -9,7 +9,7 @@ let readers = [
   new Reader.LinkReader('like', 'enableLiking'),
   new Reader.LinkReader('unlike', 'enableUnliking'),
   new Reader.FieldReader('src', 'setSrc'),
-  new Reader.LinkListReader('tag', 'setTags'),
+  new Reader.LinkListReader('tag-entry', 'setTags'),
   new Reader.FieldReader('likes', 'setLikes')
 ];
 

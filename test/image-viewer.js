@@ -203,11 +203,11 @@ describeComponent(ImageViewer, reactTest => {
       let imageViewer = reactTest.ref.current;
       let tags = [
         {
-          rel: 'tag',
+          rel: 'tag-entry',
           href: 'https://api.com/tags/1',
         },
         {
-          rel: 'tag',
+          rel: 'tag-entry',
           href: 'https://api.com/tags/2',
         }
       ];
