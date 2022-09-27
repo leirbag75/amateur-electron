@@ -148,4 +148,23 @@ withReactTest('backend', reactTest => {
 
   });
 
+  describe('addTag', () => {
+
+    it('should post the given tag name to the given URL', () => {
+      let url = 'https://api.com/tag_entries';
+      backend.addTag(url, 'aTag');
+      assert.ok(backend.http.fetch.calledOnce, '"fetch" not called');
+      let args = backend.http.fetch.getCall(0).args;
+      assert.equal(args[0], url);
+      assert.equal(args[1].method, 'POST');
+      assert.equal(args[1].body, '{"name":"aTag"}');
+    });
+
+    it('should return whatever fetch returns', () => {
+      backend.http.fetch = sinon.fake.returns(1);
+      assert.equal(backend.addTag('a', 'b'), 1);
+    });
+
+  });
+
 });

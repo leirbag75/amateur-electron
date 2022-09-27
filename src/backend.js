@@ -40,4 +40,8 @@ export default class Backend {
     return this.http.fetch(url, {method: 'POST', body: query});
   }
 
+  addTag(url, name) {
+    return this.http.fetch(url, {method: 'POST', body: JSON.stringify({name})});
+  }
+
 }
