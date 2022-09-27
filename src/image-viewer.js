@@ -88,6 +88,10 @@ export default class ImageViewer extends Resource {
             thumb_down
           </Button>
         </div>
+        <form className="add-tag">
+          <input className="tag-name" />
+          <input className="submit-tag-name" type="submit" />
+        </form>
         <div className="tag-list">
           {this.state.tags.map(tag => <Tag
              key={tag.href}

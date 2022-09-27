@@ -239,4 +239,19 @@ describeComponent(ImageViewer, reactTest => {
     });
   });
 
+  describe('add tag', () => {
+
+    it('should render form to enter tag', () => {
+      assert.rendered(document, 'form.add-tag');
+      assert.rendered(document, 'form.add-tag input.tag-name');
+      assert.rendered(document, 'form.add-tag input.submit-tag-name');
+      let tagNameInput = document.querySelector('form.add-tag input.tag-name');
+      assert.equal(tagNameInput.type, 'text');
+      let submitInput = document
+        .querySelector('form.add-tag input.submit-tag-name');
+      assert.equal(submitInput.type, 'submit');
+    });
+
+  });
+
 });
