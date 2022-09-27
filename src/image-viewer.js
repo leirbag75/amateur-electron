@@ -20,6 +20,7 @@ export default class ImageViewer extends Resource {
     this.state = {
       relLike: null,
       relUnlike: null,
+      relAddTag: null,
       src: '',
       tags: [],
       likes: 0
@@ -47,6 +48,22 @@ export default class ImageViewer extends Resource {
     return this.props.backend.unlike(this.state.relUnlike, this).then(() => {
       this.refresh();
     });
+  }
+
+  addTag(tagName) {
+    if(!this.state.relAddTag)
+      throw new OperationNotEnabled('Adding tags not enabled');
+    return this.props.backend.addTag(this.state.relAddTag, tagName)
+      .then(this.refresh);
+  }
+
+  onSubmitTagName = event => {
+    event.preventDefault();
+    this.addTag(event.target.elements.tagName.value);
+  }
+
+  enableAddingTags(url) {
+    this.setState({relAddTag: url});
   }
 
   enableLiking(url) {
@@ -88,8 +105,8 @@ export default class ImageViewer extends Resource {
             thumb_down
           </Button>
         </div>
-        <form className="add-tag">
-          <input className="tag-name" />
+        <form className="add-tag" onSubmit={this.onSubmitTagName}>
+          <input className="tag-name" name="tagName" />
           <input className="submit-tag-name" type="submit" />
         </form>
         <div className="tag-list">

@@ -241,6 +241,12 @@ describeComponent(ImageViewer, reactTest => {
 
   describe('add tag', () => {
 
+    beforeEach(() => {
+      sinon.replace(
+        reactTest.backend, 'addTag', sinon.fake.returns(Promise.resolve(1))
+      );
+    });
+
     it('should render form to enter tag', () => {
       assert.rendered(document, 'form.add-tag');
       assert.rendered(document, 'form.add-tag input.tag-name');
@@ -250,6 +256,45 @@ describeComponent(ImageViewer, reactTest => {
       let submitInput = document
         .querySelector('form.add-tag input.submit-tag-name');
       assert.equal(submitInput.type, 'submit');
+    });
+
+    it('should throw an error if adding tags not enabled', () => {
+      assert.throws(
+        () => {
+          ref.current.addTag('blah');
+        },
+        OperationNotEnabled
+      );
+    });
+
+    it('should call addTag on backend if enabled', () => {
+      act(() => {
+        ref.current.enableAddingTags('https://api.com/tag_entries');
+      });
+      ref.current.addTag('blah');
+      assert.calledOnceWith(
+        reactTest.backend,
+        'addTag',
+        'https://api.com/tag_entries',
+        'blah'
+      );
+    });
+
+    it('should call refresh after addTag promise is fulfilled', async () => {
+      sinon.replace(ref.current, 'refresh', sinon.fake());
+      act(() => {
+        ref.current.enableAddingTags('https;//api.com/tag_entries');
+      });
+      await ref.current.addTag('blah');
+      assert.calledOnceWith(ref.current, 'refresh');
+    });
+
+    it('should call addTag when the form is submitted', () => {
+      sinon.replace(ref.current, 'addTag', sinon.fake());
+      let input = document.querySelector('input.tag-name');
+      input.value = 'blah';
+      simulateClick(document, 'form.add-tag input.submit-tag-name');
+      assert.calledOnceWith(ref.current, 'addTag', 'blah');
     });
 
   });
