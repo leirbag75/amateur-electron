@@ -230,7 +230,7 @@ describeComponent(HomePage, reactTest => {
       );
     });
 
-    it('should call "search" on the backend if search is enabled', () => {
+    it('should call "search" on the backend if search is enabled', async () => {
       sinon.replace(
         reactTest.backend,
         'search',
@@ -239,7 +239,9 @@ describeComponent(HomePage, reactTest => {
       act(() => {
         reactTest.ref.current.enableSearch('https://api.com/search');
       });
-      reactTest.ref.current.search('{"and": ["tag1", "tag2"]}');
+      await act(async () => {
+        await reactTest.ref.current.search('{"and": ["tag1", "tag2"]}');
+      });
       assert.calledOnceWith(
         reactTest.backend,
         'search',
