@@ -213,6 +213,7 @@ describeComponent(ImageViewer, reactTest => {
       ];
       let relLike = 'https://api.com/likes'
       let relUnlike =  'https://api.com/unlikes';
+      let relAddTag = 'https://api.com/tag_entries';
       let src = 'https://image.com/image.jpeg';
       act(() => {
         imageViewer.readResource({
@@ -225,6 +226,10 @@ describeComponent(ImageViewer, reactTest => {
               rel: 'unlike',
               href: relUnlike
             },
+            {
+              rel: 'add-tag',
+              href: relAddTag
+            },
             ...tags
           ],
           src,
@@ -234,6 +239,7 @@ describeComponent(ImageViewer, reactTest => {
       assert.equal(imageViewer.state.src, src);
       assert.equal(imageViewer.state.relLike, relLike);
       assert.equal(imageViewer.state.relUnlike, relUnlike);
+      assert.equal(imageViewer.state.relAddTag, relAddTag);
       assert.deepEqual(imageViewer.state.tags, tags);
       assert.equal(imageViewer.state.likes, 3);
     });

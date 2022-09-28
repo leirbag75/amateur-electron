@@ -10,7 +10,8 @@ let readers = [
   new Reader.LinkReader('unlike', 'enableUnliking'),
   new Reader.FieldReader('src', 'setSrc'),
   new Reader.LinkListReader('tag-entry', 'setTags'),
-  new Reader.FieldReader('likes', 'setLikes')
+  new Reader.FieldReader('likes', 'setLikes'),
+  new Reader.LinkReader('add-tag', 'enableAddingTags')
 ];
 
 export default class ImageViewer extends Resource {
