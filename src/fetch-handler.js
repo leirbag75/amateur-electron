@@ -365,10 +365,13 @@ class FetchHandler {
   }
 
   async getTag(index) {
-    let statement = this.db.prepare("SELECT name FROM tag WHERE id = ?");
+    let statement = this.db.prepare("SELECT name, hidden FROM tag WHERE id = ?");
     let tag = await statement.get(index);
     statement.finalize();
-    return tag;
+    return {
+      name: tag.name,
+      hidden: !!tag.hidden
+    };
   }
 
   async addLibraryEntry(url) {
