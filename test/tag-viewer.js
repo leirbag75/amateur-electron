@@ -13,40 +13,40 @@ describeComponent(TagViewer, reactTest => {
 
   let formSelector = 'form.edit-tag-form';
 
+  function getNameInput(document) {
+    return document.querySelector(`${formSelector} input.tag-name-input`);
+  }
+
+  function getHiddennessInput(document) {
+    return document.querySelector(`${formSelector} input.tag-hiddenness-input`);
+  }
+
   it('should show form for editing tag data', () => {
     assert.rendered(reactTest.document, formSelector);
   });
 
   it('should show textbox for changing tag names', () => {
-    let textInput = reactTest
-      .document
-      .querySelector(`${formSelector} input.tag-name-input`);
+    let textInput = getNameInput(reactTest.document);
     assert.ok(textInput, 'Tag name input not rendered');
     assert.equal(textInput.type, 'text');
   });
 
   it('should show checkbox for changing hiddenness of tag', () => {
-    let hiddenInput = reactTest
-      .document
-      .querySelector(`${formSelector} input.tag-hiddenness-input`);
+    let hiddenInput = getHiddennessInput(reactTest.document);
     assert.ok(hiddenInput, 'Tag hiddenness input not rendered');
     assert.equal(hiddenInput.type, 'checkbox');
   });
 
   it('should change hiddenness value when setHiddenness is called', () => {
     let tagViewer = reactTest.ref.current;
-    let hiddenInput = reactTest
-      .document
-      .querySelector(`${formSelector} input.tag-hiddenness-input`);
+    let hiddenInput = getHiddennessInput(reactTest.document);
     tagViewer.setHiddenness(true);
     assert.equal(hiddenInput.checked, true);
   });
 
   it('should change name value when setName is called', () => {
     let tagViewer = reactTest.ref.current;
-    let nameInput = reactTest
-      .document
-      .querySelector(`${formSelector} input.tag-name-input`);
+    let nameInput = getNameInput(reactTest.document);
     tagViewer.setName('blah');
     assert.equal(nameInput.value, 'blah');
   });
