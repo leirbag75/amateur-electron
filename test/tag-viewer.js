@@ -33,4 +33,22 @@ describeComponent(TagViewer, reactTest => {
     assert.equal(hiddenInput.type, 'checkbox');
   });
 
+  it('should change hiddenness value when setHiddenness is called', () => {
+    let tagViewer = reactTest.ref.current;
+    let hiddenInput = reactTest
+      .document
+      .querySelector(`${formSelector} input.tag-hiddenness-input`);
+    tagViewer.setHiddenness(true);
+    assert.equal(hiddenInput.checked, true);
+  });
+
+  it('should change name value when setName is called', () => {
+    let tagViewer = reactTest.ref.current;
+    let nameInput = reactTest
+      .document
+      .querySelector(`${formSelector} input.tag-name-input`);
+    tagViewer.setName('blah');
+    assert.equal(nameInput.value, 'blah');
+  });
+
 });
