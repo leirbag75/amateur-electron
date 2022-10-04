@@ -51,4 +51,17 @@ describeComponent(TagViewer, reactTest => {
     assert.equal(nameInput.value, 'blah');
   });
 
+  it('should read tag name and hiddenness values', () => {
+    let tagViewer = reactTest.ref.current;
+    tagViewer.readResource({
+      links: [],
+      name: 'some tag',
+      hidden: true
+    });
+    let nameInput = getNameInput(reactTest.document);
+    let hiddennessInput = getHiddennessInput(reactTest.document);
+    assert.equal(nameInput.value, 'some tag');
+    assert.equal(hiddennessInput.checked, true);
+  });
+
 });

@@ -1,5 +1,11 @@
 import React from 'react';
 import Resource from './resource';
+import * as Reader from './readers';
+
+let readers = [
+  new Reader.FieldReader('name', 'setName'),
+  new Reader.FieldReader('hidden', 'setHiddenness')
+];
 
 export default class TagViewer extends Resource {
 
@@ -7,6 +13,10 @@ export default class TagViewer extends Resource {
     super(props);
     this.hiddennessInput = React.createRef();
     this.nameInput = React.createRef();
+  }
+
+  readers() {
+    return readers;
   }
 
   setName(value) {
