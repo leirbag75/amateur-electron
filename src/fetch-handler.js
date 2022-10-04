@@ -296,6 +296,10 @@ function makeTagEntryUrl(imageIndex, tagIndex) {
   return `tag_entries/${imageIndex}_${tagIndex}`;
 }
 
+function makeAddTagEntryUrl(imageIndex) {
+  return `tag_entries?image_index=${imageIndex}`;
+}
+
 function makeSearchUrl() {
   return 'search';
 }
@@ -444,6 +448,10 @@ class ImageHandler extends FetchHandler {
     links.push({
       rel: 'like',
       href: makeLikeUrl(index)
+    });
+    links.push({
+      rel: 'add-tag',
+      href: makeAddTagEntryUrl(index)
     });
     if(row.likes > 0)
       links.push({
