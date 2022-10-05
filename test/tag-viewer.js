@@ -74,4 +74,75 @@ describeComponent(TagViewer, reactTest => {
     assert.equal(submitInput.type, 'submit');
   });
 
+  describe('editTag', () => {
+
+    let tagViewer;
+
+    beforeEach(() => {
+      tagViewer = reactTest.ref.current;
+    });
+
+    it('should throw an error when not enabled', () => {
+      assert.throws(
+        () => {
+          tagViewer.editTag('some name', true);
+        },
+        OperationNotEnabled,
+        'editTag called while not enabled, but no error thrown'
+      );
+    });
+
+    it('should call editTag on the backend if enabled', () => {
+      sinon.replace(reactTest.backend, 'editTag', sinon.fake());
+      act(() => {
+        tagViewer.enableEditing('https://api.com/tags/1');
+      });
+      tagViewer.editTag('some name', true);
+      assert.calledOnceWith(
+        reactTest.backend,
+        'editTag',
+        'https://api.com/tags/1',
+        'some name',
+        true
+      );
+    });
+
+    it('should be called when the edit tag form is submitted', () => {
+      sinon.replace(tagViewer, 'editTag', sinon.fake());
+      let nameInput = getNameInput(reactTest.document);
+      let hiddennessInput = getHiddennessInput(reactTest.document);
+      nameInput.value = 'blah';
+      hiddennessInput.checked = true;
+      simulateClick(
+        reactTest.document,
+        `${formSelector} input.submit-tag-changes`
+      );
+      assert.calledOnceWith(
+        tagViewer,
+        'editTag',
+        'blah',
+        true
+      );
+    });
+
+    it('should process the checkbox correctly', () => {
+      sinon.replace(tagViewer, 'editTag', sinon.fake());
+      let nameInput = getNameInput(reactTest.document);
+      let hiddennessInput = getHiddennessInput(reactTest.document);
+      nameInput.value = 'blah';
+      hiddennessInput.checked = false;
+      simulateClick(
+        reactTest.document,
+        `${formSelector} input.submit-tag-changes`
+      );
+      assert.calledOnceWith(
+        tagViewer,
+        'editTag',
+        'blah',
+        false
+      );
+    });
+
+  });
+
 });
