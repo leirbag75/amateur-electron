@@ -35,6 +35,7 @@ export default class TagViewer extends Resource {
           type="checkbox"
           ref={this.hiddennessInput}
         />
+        <input className="submit-tag-changes" type="submit" />
       </form>
   }
 

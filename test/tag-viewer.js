@@ -21,6 +21,10 @@ describeComponent(TagViewer, reactTest => {
     return document.querySelector(`${formSelector} input.tag-hiddenness-input`);
   }
 
+  function getSubmitInput(document) {
+    return document.querySelector(`${formSelector} input.submit-tag-changes`);
+  }
+
   it('should show form for editing tag data', () => {
     assert.rendered(reactTest.document, formSelector);
   });
@@ -62,6 +66,12 @@ describeComponent(TagViewer, reactTest => {
     let hiddennessInput = getHiddennessInput(reactTest.document);
     assert.equal(nameInput.value, 'some tag');
     assert.equal(hiddennessInput.checked, true);
+  });
+
+  it('should render a "save changes" button', () => {
+    let submitInput = getSubmitInput(reactTest.document);
+    assert.ok(submitInput);
+    assert.equal(submitInput.type, 'submit');
   });
 
 });
