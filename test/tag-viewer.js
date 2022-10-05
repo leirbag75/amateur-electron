@@ -55,17 +55,25 @@ describeComponent(TagViewer, reactTest => {
     assert.equal(nameInput.value, 'blah');
   });
 
-  it('should read tag name and hiddenness values', () => {
+  it('should read necessary fields from server response', () => {
     let tagViewer = reactTest.ref.current;
-    tagViewer.readResource({
-      links: [],
-      name: 'some tag',
-      hidden: true
+    act(() => {
+      tagViewer.readResource({
+        links: [
+          {
+            rel: 'edit-tag',
+            href: 'https://api.com/tags/1'
+          }
+        ],
+        name: 'some tag',
+        hidden: true
+      });
     });
     let nameInput = getNameInput(reactTest.document);
     let hiddennessInput = getHiddennessInput(reactTest.document);
     assert.equal(nameInput.value, 'some tag');
     assert.equal(hiddennessInput.checked, true);
+    assert.equal(tagViewer.state.relEditTag, 'https://api.com/tags/1');
   });
 
   it('should render a "save changes" button', () => {

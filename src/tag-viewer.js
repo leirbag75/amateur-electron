@@ -5,7 +5,8 @@ import { OperationNotEnabled } from './errors';
 
 let readers = [
   new Reader.FieldReader('name', 'setName'),
-  new Reader.FieldReader('hidden', 'setHiddenness')
+  new Reader.FieldReader('hidden', 'setHiddenness'),
+  new Reader.LinkReader('edit-tag', 'enableEditing')
 ];
 
 export default class TagViewer extends Resource {
