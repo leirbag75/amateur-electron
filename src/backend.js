@@ -44,4 +44,11 @@ export default class Backend {
     return this.http.fetch(url, {method: 'POST', body: JSON.stringify({name})});
   }
 
+  editTag(url, name, hidden) {
+    this.http.fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify({name, hidden})
+    });
+  }
+
 }

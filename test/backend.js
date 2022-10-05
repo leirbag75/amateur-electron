@@ -167,4 +167,18 @@ withReactTest('backend', reactTest => {
 
   });
 
+  describe('editTag', () => {
+
+    it('should put the given name and hidden values at the given URL', () => {
+      let url = 'https://api.com/tags/1';
+      backend.editTag(url, 'aTag', false);
+      assert.ok(backend.http.fetch.calledOnce, '"fetch" not called');
+      let args = backend.http.fetch.getCall(0).args;
+      assert.equal(args[0], url);
+      assert.equal(args[1].method, 'PUT');
+      assert.equal(args[1].body, '{"name":"aTag","hidden":false}');
+    });
+
+  });
+
 });
