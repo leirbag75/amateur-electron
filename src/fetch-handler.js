@@ -519,7 +519,16 @@ class TagHandler extends FetchHandler {
 
   async handle() {
     let index = parseInt(this.reader.index);
-    return this.getTag(index);
+    let tag = await this.getTag(index);
+    return {
+      links: [
+        {
+          rel: 'edit-tag',
+          href: makeTagUrl(index)
+        }
+      ],
+      ...tag
+    };
   }
 
 }
