@@ -212,6 +212,26 @@ class TagUrlReader extends UrlReader {
 
 }
 
+class EditTagUrlReader extends UrlReader {
+
+  get regex() {
+    return /^tags\/(?<index>[0-9]+)$/;
+  }
+
+  get method() {
+    return 'PUT';
+  }
+
+  get index() {
+    return this.match.groups.index;
+  }
+
+  get handlerClass() {
+    return EditTagHandler;
+  }
+
+}
+
 class TagEntryUrlReader extends UrlReader {
 
   get regex() {
@@ -312,6 +332,7 @@ let urlReaderClasses = [
   UnlikeUrlReader,
   TagUrlReader,
   TagEntryUrlReader,
+  EditTagUrlReader,
   AddTagEntryUrlReader,
   SearchUrlReader
 ];
@@ -394,6 +415,13 @@ class FetchHandler {
   async addTag(imageIndex, tagIndex) {
     let statement = this.db.prepare("INSERT OR IGNORE INTO tag_entry(library_entry_id, tag_id) VALUES(?, ?)");
     await statement.run(imageIndex, tagIndex);
+    statement.finalize();
+  }
+
+  async editTag(tagIndex, name, hidden) {
+    let statement = this.db.prepare("UPDATE tag SET name = ?, hidden = ? WHERE id = ?");
+    let hiddenValue = hidden? 1: 0;
+    await statement.run(name, hiddenValue, tagIndex);
     statement.finalize();
   }
 
@@ -492,6 +520,17 @@ class TagHandler extends FetchHandler {
   async handle() {
     let index = parseInt(this.reader.index);
     return this.getTag(index);
+  }
+
+}
+
+class EditTagHandler extends FetchHandler {
+
+  async handle() {
+    let index = parseInt(this.reader.index);
+    let response = JSON.parse(this.options.body);
+    let name = response.name, hidden = response.hidden;
+    return this.editTag(index, name, hidden);
   }
 
 }
