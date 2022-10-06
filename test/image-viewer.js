@@ -176,10 +176,14 @@ describeComponent(ImageViewer, reactTest => {
     assert.equal(tagList.children.length, 0, 'Tag list does not start empty');
     act(() => {ref.current.setTags(tags);});
     let renderedTags = [...tagList.children];
-    assert.ok(
-      renderedTags.length == tags.length && renderedTags.every((child, i) => child.innerHTML === tags[i].embed.name),
-      'Rendered tags do not match test tags'
-    );
+    for(let i = 0; i < tags.length; ++i) {
+      assert.ok(
+        renderedTags[i],
+        `Required tag not rendered: ${tags[i].embed.name}`
+      );
+      assert.equal(renderedTags[i].innerHTML, tags[i].embed.name);
+    }
+    assert.equal(renderedTags.length, tags.length, 'Too many tags rendered');
   });
 
   describe('like count', () => {
