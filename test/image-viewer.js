@@ -169,9 +169,9 @@ describeComponent(ImageViewer, reactTest => {
     let tagList = document.querySelector('.tag-list');
     assert.ok(tagList, 'Tag list not rendered');
     let tags = [
-      {href: '1', embed: {name: 'drawing'}},
-      {href: '2', embed: {name: 'female'}},
-      {href: '3', embed: {name: 'outdoors'}}
+      {href: '1', embed: {links: [], name: 'drawing'}},
+      {href: '2', embed: {links: [], name: 'female'}},
+      {href: '3', embed: {links: [], name: 'outdoors'}}
     ];
     assert.equal(tagList.children.length, 0, 'Tag list does not start empty');
     act(() => {ref.current.setTags(tags);});
