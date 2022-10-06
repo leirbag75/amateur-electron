@@ -55,7 +55,7 @@ export default class ImageViewer extends Resource {
     if(!this.state.relAddTag)
       throw new OperationNotEnabled('Adding tags not enabled');
     return this.props.backend.addTag(this.state.relAddTag, tagName)
-      .then(this.refresh);
+      .then(() => this.refresh());
   }
 
   onSubmitTagName = event => {
