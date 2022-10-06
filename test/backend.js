@@ -181,4 +181,22 @@ withReactTest('backend', reactTest => {
 
   });
 
+  describe('removeTag', () => {
+
+    it('should send a delete request to the given URL', () => {
+      let url = 'https://api.com/tag_entries/1_2';
+      backend.removeTag(url);
+      assert.ok(backend.http.fetch.calledOnce, '"fetch" not called');
+      let args = backend.http.fetch.getCall(0).args;
+      assert.equal(args[0], url);
+      assert.equal(args[1].method, 'DELETE');
+    });
+
+    it('should return whatever fetch returns', () => {
+      backend.http.fetch = sinon.fake.returns(1);
+      assert.equal(backend.removeTag('https://api.com/tag_entries/1_2'), 1);
+    });
+
+  });
+
 });

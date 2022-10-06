@@ -51,4 +51,8 @@ export default class Backend {
     });
   }
 
+  removeTag(url) {
+    return this.http.fetch(url, {method: 'DELETE'});
+  }
+
 }
