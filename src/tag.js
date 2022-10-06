@@ -1,10 +1,11 @@
 import React from 'react';
 import Resource from './resource';
-import { FieldReader } from './readers';
+import { FieldReader, LinkReader } from './readers';
 import { OperationNotEnabled } from './errors';
 
 let readers = [
-  new FieldReader('name', 'setName')
+  new FieldReader('name', 'setName'),
+  new LinkReader('remove-tag', 'enableRemoving')
 ]
 
 export default class Tag extends Resource {
@@ -36,7 +37,19 @@ export default class Tag extends Resource {
   }
 
   render() {
-    return <span className="tag-name">{this.state.tagName}</span>
+    return <div className="tag">
+        <span className="tag-name">{this.state.tagName}</span>
+        {
+          this.state.relRemoveTag?
+            <span
+              className="remove-tag-button"
+              onClick={() => this.removeTag()}
+            >
+              X
+            </span>:
+            null
+        }
+      </div>
   }
 
 }

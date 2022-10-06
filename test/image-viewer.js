@@ -165,6 +165,10 @@ describeComponent(ImageViewer, reactTest => {
     assert.equal(imageSrc(image), src, "Image's src not changed");
   });
 
+  function getRenderedTags(tagList) {
+    return [...tagList.children].map(child => child.querySelector('.tag-name'));
+  }
+
   it('should render tags', () => {
     let tagList = document.querySelector('.tag-list');
     assert.ok(tagList, 'Tag list not rendered');
@@ -175,7 +179,7 @@ describeComponent(ImageViewer, reactTest => {
     ];
     assert.equal(tagList.children.length, 0, 'Tag list does not start empty');
     act(() => {ref.current.setTags(tags);});
-    let renderedTags = [...tagList.children];
+    let renderedTags = getRenderedTags(tagList);
     for(let i = 0; i < tags.length; ++i) {
       assert.ok(
         renderedTags[i],

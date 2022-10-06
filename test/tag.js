@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import App from '../src/app';
 import Tag from '../src/tag';
 import assert from './assertions';
-import { describeComponent  } from './test-helpers';
+import { describeComponent, simulateClick  } from './test-helpers';
 import React from 'react';
 import addResourceTests from './resource-subclass.js';
 import { OperationNotEnabled } from '../src/errors';
@@ -48,6 +48,47 @@ describeComponent(Tag, reactTest => {
       assert.calledOnceWith(reactTest.backend, 'removeTag', url);
     });
 
+  });
+
+  describe('remove button', () => {
+
+    it('should render when removing is enabled', () => {
+      act(() => {
+        ref.current.enableRemoving('https://api.com/tag_entries/1_2');
+      });
+      assert.rendered(document, '.remove-tag-button');
+    });
+
+    it('should not render when removing is disabled', () => {
+      assert.notRendered(document, '.remove-tag-button');
+    });
+
+    it('should call removeTag on backend when clicked', () => {
+      sinon.replace(reactTest.backend, 'removeTag', sinon.fake());
+      let url = 'https://api.com/tag_entries/1_2';
+      act(() => {
+        ref.current.enableRemoving(url);
+      });
+      simulateClick(document, '.remove-tag-button');
+      assert.calledOnceWith(reactTest.backend, 'removeTag', url);
+    });
+
+  });
+
+  it('should read remove-tag link from response', () => {
+    let url = 'https://api.com/tag_entries/1_2';
+    act(() => {
+      ref.current.readResource({
+        links: [
+          {
+            rel: 'remove-tag',
+            href: url
+          }
+        ],
+        name: 'blah'
+      });
+    });
+    assert.equal(ref.current.state.relRemoveTag, url);
   });
 
 });
