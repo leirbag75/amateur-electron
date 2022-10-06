@@ -256,6 +256,30 @@ class TagEntryUrlReader extends UrlReader {
 
 }
 
+class RemoveTagUrlReader extends UrlReader {
+
+  get regex() {
+    return /^tag_entries\/(?<imageIndex>[0-9]+)_(?<tagIndex>[0-9]+)$/;
+  }
+
+  get method() {
+    return 'DELETE';
+  }
+
+  get imageIndex() {
+    return this.match.groups.imageIndex;
+  }
+
+  get tagIndex() {
+    return this.match.groups.tagIndex;
+  }
+
+  get handlerClass() {
+    return RemoveTagHandler;
+  }
+
+}
+
 class AddTagEntryUrlReader extends UrlReader {
 
   get regex() {
@@ -332,6 +356,7 @@ let urlReaderClasses = [
   UnlikeUrlReader,
   TagUrlReader,
   TagEntryUrlReader,
+  RemoveTagUrlReader,
   EditTagUrlReader,
   AddTagEntryUrlReader,
   SearchUrlReader
@@ -422,6 +447,12 @@ class FetchHandler {
     let statement = this.db.prepare("UPDATE tag SET name = ?, hidden = ? WHERE id = ?");
     let hiddenValue = hidden? 1: 0;
     await statement.run(name, hiddenValue, tagIndex);
+    statement.finalize();
+  }
+
+  async removeTag(libraryEntryIndex, tagIndex) {
+    let statement = this.db.prepare('DELETE FROM tag_entry WHERE library_entry_id = ? AND tag_id = ?');
+    await statement.run(libraryEntryIndex, tagIndex);
     statement.finalize();
   }
 
@@ -549,6 +580,14 @@ class TagEntryHandler extends FetchHandler {
   async handle() {
     let tagIndex = parseInt(this.reader.tagIndex);
     return this.getTag(tagIndex);
+  }
+
+}
+
+class RemoveTagHandler extends FetchHandler {
+
+  async handle() {
+    return this.removeTag(this.reader.imageIndex, this.reader.tagIndex);
   }
 
 }
