@@ -578,8 +578,18 @@ class EditTagHandler extends FetchHandler {
 class TagEntryHandler extends FetchHandler {
 
   async handle() {
+    let imageIndex = parseInt(this.reader.imageIndex);
     let tagIndex = parseInt(this.reader.tagIndex);
-    return this.getTag(tagIndex);
+    let tag = await this.getTag(tagIndex);
+    return {
+      links: [
+        {
+          rel: 'remove-tag',
+          href: makeTagEntryUrl(imageIndex, tagIndex)
+        }
+      ],
+      ...tag
+    };
   }
 
 }
