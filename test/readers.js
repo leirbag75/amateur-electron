@@ -63,11 +63,6 @@ describe('readers', () => {
         assert.equal(args[0][i], links[i]);
     });
 
-    it('should not call the method if no links are found', () => {
-      let reader = new readers.LinkListReader('tag', 'nonexistent');
-      reader.read({links: []}, {});
-    });
-
   });
 
 });
