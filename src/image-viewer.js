@@ -108,7 +108,7 @@ export default class ImageViewer extends Resource {
         </div>
         <form className="add-tag" onSubmit={this.onSubmitTagName}>
           <input className="tag-name" name="tagName" />
-          <input className="submit-tag-name" type="submit" />
+          <button className="submit-tag-name" type="submit">Add tag</button>
         </form>
         <div className="tag-list">
           {this.state.tags.map(tag => <Tag

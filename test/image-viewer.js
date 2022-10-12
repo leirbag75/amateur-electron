@@ -261,14 +261,16 @@ describeComponent(ImageViewer, reactTest => {
       );
     });
 
+    let submitSelector = '.submit-tag-name';
+
     it('should render form to enter tag', () => {
       assert.rendered(document, 'form.add-tag');
       assert.rendered(document, 'form.add-tag input.tag-name');
-      assert.rendered(document, 'form.add-tag input.submit-tag-name');
+      assert.rendered(document, 'form.add-tag ' + submitSelector);
       let tagNameInput = document.querySelector('form.add-tag input.tag-name');
       assert.equal(tagNameInput.type, 'text');
       let submitInput = document
-        .querySelector('form.add-tag input.submit-tag-name');
+        .querySelector('form.add-tag ' + submitSelector);
       assert.equal(submitInput.type, 'submit');
     });
 
@@ -307,7 +309,7 @@ describeComponent(ImageViewer, reactTest => {
       sinon.replace(ref.current, 'addTag', sinon.fake());
       let input = document.querySelector('input.tag-name');
       input.value = 'blah';
-      simulateClick(document, 'form.add-tag input.submit-tag-name');
+      simulateClick(document, 'form.add-tag ' + submitSelector);
       assert.calledOnceWith(ref.current, 'addTag', 'blah');
     });
 
