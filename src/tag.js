@@ -42,10 +42,10 @@ export default class Tag extends Resource {
         {
           this.state.relRemoveTag?
             <span
-              className="remove-tag-button"
+              className="remove-tag-button material-icons"
               onClick={() => this.removeTag()}
             >
-              X
+              close
             </span>:
             null
         }
