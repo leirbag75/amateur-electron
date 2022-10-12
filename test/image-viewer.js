@@ -190,6 +190,8 @@ describeComponent(ImageViewer, reactTest => {
     assert.equal(renderedTags.length, tags.length, 'Too many tags rendered');
   });
 
+  it('should refresh when a tag is deleted');
+
   describe('like count', () => {
 
     it('should render the like count', () => {

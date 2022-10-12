@@ -33,7 +33,11 @@ export default class Tag extends Resource {
   removeTag() {
     if(!this.state.relRemoveTag)
       throw new OperationNotEnabled('Removing tag not enabled');
-    this.props.backend.removeTag(this.state.relRemoveTag);
+    let callback = this.props.onRemove || (() => {});
+    this.props.backend.removeTag(this.state.relRemoveTag)
+      .then(() => {
+        callback(this);
+      });
   }
 
   render() {

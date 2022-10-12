@@ -116,6 +116,7 @@ export default class ImageViewer extends Resource {
              backend={this.props.backend}
              url={tag.href}
              embed={tag.embed}
+             onRemove={() => this.refresh()}
           />)}
         </div>
       </>

@@ -55,6 +55,19 @@ function standardize(query) {
     throw new Error('Invalid query');
 }
 
+function standardizeSimple(query) {
+  if(isNaN(query))
+    return {
+      operation: 'has_tag',
+      values: [query]
+    };
+  else
+    return {
+      operation: 'likes_greater_than_or_equal_to',
+      values: [parseInt(query)]
+    };
+}
+
 let readers = [
   new LinkListReader('collection-image', 'setThumbnails'),
   new LinkReader('add-library-entry', 'enableAddingLibraryEntries'),
@@ -69,8 +82,14 @@ export default class HomePage extends Resource {
       thumbnails: [],
       libraryEntryModalVisible: false,
       relAddLibraryEntry: '',
-      relSearch: ''
-    }
+      relSearch: '',
+      advancedSearch: false
+    };
+    this.searchType = React.createRef();
+  }
+
+  get advancedSearch() {
+    return this.searchType.current.value !== 'simple';
   }
 
   setThumbnails(thumbnails) {
@@ -110,7 +129,10 @@ export default class HomePage extends Resource {
       .props
       .backend
       .search(
-        this.state.relSearch, JSON.stringify(standardize(JSON.parse(query)))
+        this.state.relSearch,
+        this.advancedSearch?
+          JSON.stringify(standardize(JSON.parse(query))):
+          JSON.stringify(standardizeSimple(query))
       );
   }
 
@@ -124,6 +146,11 @@ export default class HomePage extends Resource {
         <button className="library-entry-modal-button" onClick={this.showLibraryEntryModal}>
           Add picture
         </button>
+        <label htmlFor="search-type">Search type</label>
+        <select ref={this.searchType} defaultValue={"simple"} id="search-type">
+          <option value="simple">Simple</option>
+          <option value="advanced">Advanced</option>
+        </select>
         <form className="search" onSubmit={this.onSearch}>
           <input className="query-input" type="text" name="query" />
           <button className="submit-search" type="submit">Search</button>
