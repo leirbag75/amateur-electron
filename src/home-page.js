@@ -126,7 +126,7 @@ export default class HomePage extends Resource {
         </button>
         <form className="search" onSubmit={this.onSearch}>
           <input className="query-input" type="text" name="query" />
-          <input className="submit-search" type="submit" />
+          <button className="submit-search" type="submit">Search</button>
         </form>
         <LibraryEntryForm visible={this.state.libraryEntryModalVisible} onSubmit={this.addLibraryEntry} onClose={this.hideLibraryEntryModal} />
         <div className="thumbnails">

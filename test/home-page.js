@@ -213,9 +213,11 @@ describeComponent(HomePage, reactTest => {
       assert.equal(input.type, 'text', 'Input type is not "text"');
     });
 
+    let searchSelector = '.submit-search';
+
     it('should contain a submit button', () => {
       let search = reactTest.document.querySelector('form.search');
-      let input = search.querySelector('input.submit-search');
+      let input = search.querySelector(searchSelector);
       assert.ok(input, 'Submit button not rendered');
       assert.equal(input.type, 'submit', 'Input type is not "submit"');
     });
@@ -284,7 +286,7 @@ describeComponent(HomePage, reactTest => {
         .document
         .querySelector('form.search input.query-input');
       input.value = '"something"';
-      simulateClick(reactTest.document, 'form.search input.submit-search');
+      simulateClick(reactTest.document, 'form.search ' + searchSelector);
       assert.calledOnceWith(reactTest.ref.current, 'search', '"something"');
     });
 
