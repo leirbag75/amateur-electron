@@ -129,6 +129,7 @@ export default class HomePage extends Resource {
           <button className="submit-search" type="submit">Search</button>
         </form>
         <LibraryEntryForm visible={this.state.libraryEntryModalVisible} onSubmit={this.addLibraryEntry} onClose={this.hideLibraryEntryModal} />
+        <h1>Library</h1>
         <div className="thumbnails">
           {
             this.state.thumbnails.map(thumbnail =>
