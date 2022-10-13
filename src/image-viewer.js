@@ -89,7 +89,7 @@ export default class ImageViewer extends Resource {
 
   render() {
     return (
-      <div>
+      <>
         <img className="image-viewed" src={this.state.src} />
         <div className="like-controls">
           <Button
@@ -118,7 +118,7 @@ export default class ImageViewer extends Resource {
              embed={tag.embed}
           />)}
         </div>
-      </div>
+      </>
     );
   }
 
