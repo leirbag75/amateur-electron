@@ -43,6 +43,12 @@
 
 }
 
+.tag {
+
+  background-color: rgb(220, 220, 220);
+
+}
+
 @keyframes click-button {
 
   0%, 100% {
