@@ -111,7 +111,7 @@ export default class HomePage extends Resource {
       .backend
       .search(
         this.state.relSearch, JSON.stringify(standardize(JSON.parse(query)))
-      ).then(this.readResource);
+      );
   }
 
   onSearch = event => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import ImageViewer from './image-viewer';
+import HomePage from './home-page';
 
 export default class Backend {
 
@@ -37,7 +38,10 @@ export default class Backend {
   }
 
   search(url, query) {
-    return this.http.fetch(url, {method: 'POST', body: query});
+    return this.http.fetch(url, {method: 'POST', body: query})
+      .then(result => {
+        this.app.setPage(<HomePage url="" backend={this} embed={result} />);
+      });
   }
 
   addTag(url, name) {

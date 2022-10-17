@@ -7,6 +7,7 @@ import Backend from '../src/backend';
 import { withReactTest } from './test-helpers';
 import App from '../src/app';
 import ImageViewer from '../src/image-viewer';
+import HomePage from '../src/home-page';
 
 class MockHttp {
   fetch = sinon.fake.returns({then: sinon.fake()});
@@ -130,9 +131,10 @@ withReactTest('backend', reactTest => {
 
   describe('search', () => {
 
+    let url = 'https://api.com/search';
+    let query = '{"operation": "and", "values": [{"operation": "has_tag", "values": "tag1"}, {"operation": "likes_equal_to", "values": [1]}]}';
+
     it('should post the given query to the given URL', () => {
-      let url = 'https://api.com/search';
-      let query = '{"operation": "and", "values": [{"operation": "has_tag", "values": "tag1"}, {"operation": "likes_equal_to", "values": [1]}]}';
       backend.search(url, query);
       assert.ok(backend.http.fetch.calledOnce, '"fetch" not called');
       let args = backend.http.fetch.getCall(0).args;
@@ -141,9 +143,24 @@ withReactTest('backend', reactTest => {
       assert.equal(args[1].body, query);
     });
 
-    it('should return whatever fetch returns', () => {
-      backend.http.fetch = sinon.fake.returns(1);
-      assert.equal(backend.search('a', 'b'), 1);
+    it('should call setPage when search results return', async () => {
+      let result = {
+        links: []
+      };
+      sinon.replace(
+        backend.http,
+        'fetch',
+        sinon.fake.returns(Promise.resolve(result))
+      );
+      reactTest.render(App, {}, backend.ref);
+      await act(async () => {
+        await backend.search(url, query);
+      });
+      let currentPage = backend.app.currentPage;
+      assert.equal(currentPage.type, HomePage, 'Page not set to HomePage');
+      assert.equal(currentPage.props.url, '', 'URL not set to given URL');
+      assert.equal(currentPage.props.embed, result, 'Result not passed');
+      assert.equal(currentPage.props.backend, backend, 'Backend not passed');
     });
 
   });

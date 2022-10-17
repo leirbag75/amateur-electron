@@ -252,31 +252,6 @@ describeComponent(HomePage, reactTest => {
       );
     });
 
-    it(
-      'should call setThumbnails with whatever the backend returns',
-      async () => {
-        let links = [
-          {
-            rel: 'collection-image',
-            href: 'https://image.com/1.jpeg'
-          },
-          {
-            rel: 'collection-image',
-            href: 'https://image.com/2.jpeg'
-          }
-        ];
-        reactTest.backend.search = () => Promise.resolve({links});
-        let homePage = reactTest.ref.current;
-        act(() => {
-          homePage.enableSearch('https://api.com/search');
-        });
-        await act(async () => {
-          await homePage.search('"tag1"');
-        });
-        assert.deepEqual(homePage.state.thumbnails, links);
-      }
-    );
-
     it('should call "search" callback on being submitted', () => {
       sinon.replace(reactTest.ref.current, 'search', sinon.fake());
       act(() => {
