@@ -12,9 +12,18 @@ export default class Resource extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.embed)
+    if(this.props.embed) {
       this.readResource(this.props.embed);
-    this.refresh();
+    }
+    if(this.props.url)
+      this.refresh();
+  }
+
+  componentDidUpdate(previousProps) {
+    if(this.props.url && this.props.url !== previousProps.url)
+      this.refresh();
+    if(this.props.embed && this.props.embed !== previousProps.embed)
+      this.readResource(this.props.embed);
   }
 
   refresh() {
